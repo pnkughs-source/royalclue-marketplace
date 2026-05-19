@@ -1,0 +1,105 @@
+RoyalClue — Admin Dashboard + Smart Signup/Login Update
+=====================================================
+
+WHAT'S IN THIS ZIP
+------------------
+admin.html      — New advanced admin dashboard (replaces the hidden admin panel)
+admin.js        — Admin dashboard logic + charts + pricing center
+signup.html     — Smart multi-step signup (3 steps, password strength, social buttons)
+login.html      — Smart login (remember-me, auto-login, password support)
+live-sync.js    — OPTIONAL: enables real-time cross-tab updates on the storefront
+INSTALL.txt     — This file
+
+INSTALL (2 minutes)
+-------------------
+1. Copy all five files into the SAME folder as your existing index.html
+   (next to your css/ , js/ , backend/ folders).
+
+2. Open admin.html in a browser. Default admin secret is: mind
+   (Change it from Settings -> Admin password.)
+
+3. To enable live updates on the storefront when admin is open in
+   another tab, add THIS ONE LINE to index.html just before </body>,
+   right after the existing <script src="js/app.js"></script> line:
+
+       <script src="live-sync.js"></script>
+
+   (Without it, the storefront still picks up new prices — you just need
+   to refresh the page.)
+
+DATA
+----
+All files share the same localStorage keys as your existing site:
+  aurum_ai_paid_products_v1     (products + prices)
+  aurum_ai_orders_v1            (orders)
+  aurum_ai_signups_v1           (customers)
+  aurum_ai_wallets_v1           (crypto addresses)
+  aurum_ai_logs_v1              (admin logs)
+  aurum_ai_admin_settings_v2    (support email / notice)
+  aurum_ai_product_source_analytics_v1
+  aurum_ai_visitor_analytics_v2
+
+New keys added by this update:
+  aurum_ai_admin_pwd_v1         (SHA-256 hash of admin password)
+  aurum_ai_admin_auth_v1        (sessionStorage admin session)
+  aurum_ai_remember_me_v1       (remember-me hash for auto-login)
+
+ADMIN DASHBOARD FEATURES
+------------------------
+- Sidebar nav: Dashboard, Orders, Customers, Products, Pricing Center,
+  Stock, Analytics, Sources, Wallets, Settings, Logs
+- KPI cards: Revenue / Orders / Pending / Customers with week-over-week deltas
+- Sales chart (7/14/30 day toggle), Source doughnut, Product bar chart
+- PRICING CENTER with 3 dedicated tabs — Single, Reseller, Bulk — each with:
+    * Multi-select checkboxes
+    * Bulk operations: Set / Add / Subtract / +% / −% / % of Single
+    * Live average, min, max, margin summary
+    * Auto-sync reseller (78%) and bulk (62%) from Single
+- Product table: inline edit name, brand, category, all 3 prices, stock,
+  view/sales counters; multi-select with bulk delete and bulk randomize stock
+- Add Product modal
+- Order queue with Pending / Approved / Delivered / Rejected filters,
+  one-click approve/deliver/reject
+- Customer table with role, looking-for, budget, source, contact, time
+- Crypto wallet editor (USDT TRC20, BTC, ETH, BNB, USDC, SOL)
+- Settings: support email, payment notice, default stock range
+- Activity logs table with export
+- CSV export for orders and customers; full JSON export
+
+SIGNUP FEATURES
+---------------
+- Two-column layout: brand panel left, form right
+- 3-step wizard with progress stepper:
+    Step 1: Account — name, email, password + strength meter, confirm,
+            terms checkbox, social buttons (Google/Facebook/Telegram prefill)
+    Step 2: Profile — role, looking-for, contact
+    Step 3: Preferences — buyer type, budget, source, optional note,
+            "Keep me logged in" toggle
+- Show/hide password toggle on every password field
+- Live password strength: 4-segment meter + checklist
+  (8+ chars, uppercase, number, symbol)
+- Real-time password match indicator
+- Saved into the same aurum_ai_signups_v1 as before — fully backward compatible
+- Auto-login token saved if "Keep me logged in" is checked
+
+LOGIN FEATURES
+--------------
+- Email + password (legacy email-only accounts can set a password on first login)
+- Auto-login: if remember-me is set, redirect straight to storefront
+- "Already logged in" detection and banner
+- Forgot password: resets the hash so user can set a new one next time
+- Social buttons route to signup with provider hint
+- Show/hide password toggle
+
+NOTES
+-----
+- The default admin password is "mind" (same as your old setup) but stored as
+  SHA-256. Change it in Settings -> Admin password.
+- Social login is UI only (Google / Facebook / Telegram) — there is no real
+  OAuth flow because the site is static + localStorage. The buttons prefill
+  signup or route a user there.
+- Live-sync.js uses the browser's native 'storage' event, which only fires
+  in OTHER tabs of the same origin. So with admin.html and index.html open
+  in two tabs, price edits flash a "Prices updated live" badge on the store.
+
+Enjoy! — drop us a thumbs-up if you like it.

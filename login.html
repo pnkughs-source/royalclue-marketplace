@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login · RoyalClue</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f7f7f2;
+      --paper2: #fbfbf7;
+      --card: #ffffff;
+      --ink: #111111;
+      --muted: #666259;
+      --line: #e3dfd2;
+      --line2: #d6d0c0;
+      --gold: #c9a227;
+      --soft: #fffaf0;
+      --green: #16a34a;
+      --red: #e11d48;
+      --body: 'Inter', sans-serif;
+      --display: Georgia, 'Times New Roman', serif;
+      --mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html,
+    body {
+      min-height: 100vh
+    }
+
+    body {
+      font-family: var(--body);
+      background: radial-gradient(circle at 85% 10%, rgba(245, 197, 66, .22), transparent 26%), radial-gradient(circle at 10% 12%, rgba(139, 92, 246, .10), transparent 21%), var(--paper);
+      color: var(--ink);
+      font-size: 14px;
+      line-height: 1.6
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit
+    }
+
+    button {
+      cursor: pointer;
+      border: 0
+    }
+
+    a {
+      color: #111;
+      text-decoration: none;
+      font-weight: 800
+    }
+
+    a:hover {
+      text-decoration: underline
+    }
+
+    .navbar {
+      min-height: 54px;
+      padding: 10px 34px;
+      background: #fff;
+      border-bottom: 1px solid #ecebe4;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, .035);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 10
+    }
+
+    .logo {
+      display: flex;
+      gap: 9px;
+      align-items: center;
+      font-size: 19px;
+      font-weight: 900;
+      letter-spacing: -.6px
+    }
+
+    .logo span {
+      color: #111
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: #111;
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-family: var(--display);
+      font-weight: 800;
+      font-size: 19px
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 9px;
+      align-items: center
+    }
+
+    .nav-actions a {
+      font-size: 12px;
+      padding: 8px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--line2);
+      background: #fff
+    }
+
+    .nav-actions a.primary {
+      background: #111;
+      color: #fff;
+      border-color: #111
+    }
+
+    .shell {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+      padding: 46px 24px 64px;
+      display: grid;
+      grid-template-columns: .92fr 1.08fr;
+      gap: 22px;
+      align-items: stretch
+    }
+
+    .hero,
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: 0 16px 42px rgba(0, 0, 0, .045)
+    }
+
+    .hero {
+      padding: 34px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 560px
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #f8f7f1;
+      color: #5a554a;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px 13px 6px 6px;
+      font-size: 11px;
+      font-weight: 800;
+      width: max-content;
+      margin-bottom: 20px
+    }
+
+    .eyebrow b {
+      background: #111;
+      color: #fff;
+      border-radius: 999px;
+      padding: 3px 8px;
+      font-size: 10px
+    }
+
+    .hero h1 {
+      font-family: var(--display);
+      font-size: clamp(42px, 5vw, 68px);
+      line-height: 1.03;
+      letter-spacing: -2.2px;
+      font-weight: 700;
+      margin-bottom: 18px
+    }
+
+    .hero h1 em {
+      font-style: italic
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 15.5px;
+      line-height: 1.72;
+      max-width: 580px
+    }
+
+    .benefits {
+      display: grid;
+      gap: 12px;
+      margin-top: 26px
+    }
+
+    .benefits div {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      background: var(--soft);
+      border: 1px solid #eadfbd;
+      border-radius: 15px;
+      padding: 12px;
+      color: #4f493d;
+      font-size: 13px
+    }
+
+    .benefits b {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: #111;
+      color: #fff;
+      flex: 0 0 auto
+    }
+
+    .card {
+      padding: 34px
+    }
+
+    .brand-mobile {
+      display: none;
+      text-align: center;
+      margin-bottom: 20px
+    }
+
+    .card h2 {
+      font-family: var(--display);
+      font-size: 38px;
+      line-height: 1.08;
+      letter-spacing: -1px;
+      margin-bottom: 7px
+    }
+
+    .sub {
+      color: var(--muted);
+      margin-bottom: 22px
+    }
+
+    .field {
+      margin-bottom: 14px
+    }
+
+    .field label {
+      display: block;
+      font-size: 11px;
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: #7a7367;
+      font-weight: 800;
+      margin-bottom: 6px
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      background: #fff;
+      color: #111;
+      border: 1px solid var(--line2);
+      border-radius: 12px;
+      padding: 12px 13px;
+      outline: none;
+      box-shadow: none
+    }
+
+    textarea {
+      min-height: 96px;
+      resize: vertical
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #8b867b
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #111;
+      box-shadow: 0 0 0 4px rgba(17, 17, 17, .07)
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px
+    }
+
+    .password-wrap {
+      position: relative
+    }
+
+    .password-wrap input {
+      padding-right: 58px
+    }
+
+    .toggle {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #f1efe6;
+      color: #111;
+      border-radius: 9px;
+      padding: 6px 9px;
+      font-size: 11px;
+      font-weight: 900
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      min-height: 50px;
+      padding: 12px 20px;
+      font-size: 14px;
+      font-weight: 900;
+      background: #111;
+      color: #fff;
+      width: 100%;
+      box-shadow: 0 14px 30px rgba(0, 0, 0, .14);
+      transition: .18s
+    }
+
+    .btn:hover {
+      background: #2b2b2b;
+      transform: translateY(-1px);
+      text-decoration: none
+    }
+
+    .btn.ghost {
+      background: #fff;
+      color: #111;
+      border: 1px solid var(--line2);
+      box-shadow: none
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px
+    }
+
+    .actions .btn {
+      flex: 1
+    }
+
+    .hint,
+    .foot {
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: 15px
+    }
+
+    .err {
+      min-height: 20px;
+      color: var(--red);
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center;
+      margin: 8px 0
+    }
+
+    .stepper {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 22px
+    }
+
+    .step-pill {
+      flex: 1;
+      padding: 9px 12px;
+      border-radius: 11px;
+      background: #fbfbf7;
+      border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      gap: 2px
+    }
+
+    .step-pill .num {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: #8b867b;
+      font-weight: 800
+    }
+
+    .step-pill .lbl {
+      font-size: 12px;
+      font-weight: 900
+    }
+
+    .step-pill.active {
+      border-color: #111;
+      background: #f1efe6
+    }
+
+    .step-pill.done {
+      border-color: #9bbf91;
+      background: #f2faef
+    }
+
+    .step {
+      display: none
+    }
+
+    .step.active {
+      display: block
+    }
+
+    .terms {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 12px
+    }
+
+    .terms input {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+      margin-top: 2px
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%) translateY(100px);
+      z-index: 300;
+      background: #111;
+      color: #fff;
+      border-radius: 14px;
+      padding: 12px 18px;
+      font-weight: 900;
+      opacity: 0;
+      transition: .25s
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0)
+    }
+
+    @media(max-width:900px) {
+      .shell {
+        grid-template-columns: 1fr
+      }
+
+      .hero {
+        display: none
+      }
+
+      .brand-mobile {
+        display: block
+      }
+
+      .navbar {
+        padding: 10px 18px
+      }
+
+      .row {
+        grid-template-columns: 1fr
+      }
+    }
+
+    @media(max-width:560px) {
+      .shell {
+        padding: 28px 16px
+      }
+
+      .card {
+        padding: 24px
+      }
+
+      .card h2 {
+        font-size: 32px
+      }
+
+      .nav-actions a:not(.primary) {
+        display: none
+      }
+
+      .stepper {
+        gap: 6px
+      }
+
+      .step-pill {
+        padding: 8px
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar"><a class="logo" href="index.html">
+      <div class="logo-mark">R</div>
+      <div><span>Royal</span>Clue</div>
+    </a>
+    <div class="nav-actions" id="authNav"><a href="signup.html">Sign Up</a><a class="primary"
+        href="index.html">Store</a></div>
+  </nav>
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow"><b>LOGIN</b> royalclue.com</div>
+      <h1>Welcome <em>back.</em></h1>
+      <p>Access your RoyalClue buyer account to continue browsing premium AI account plans, manage your saved details,
+        and return to checkout faster.</p>
+      <div class="benefits">
+        <div><b>✓</b><span>Continue with your saved buyer profile</span></div>
+        <div><b>✓</b><span>Use one account for Single, Reseller, and Bulk orders</span></div>
+        <div><b>✓</b><span>Return to the marketplace after login</span></div>
+      </div>
+    </section>
+    <section class="card">
+      <div class="brand-mobile">
+        <div class="logo-mark" style="margin:0 auto 10px">R</div><b>RoyalClue</b>
+      </div>
+      <h2>Log in</h2>
+      <p class="sub">Continue to your RoyalClue account.</p>
+      <form onsubmit="event.preventDefault();doLogin()">
+        <div class="field"><label>Email address</label><input id="loginEmail" type="email" placeholder="you@example.com"
+            autocomplete="email" required></div>
+        <div class="field"><label>Password</label>
+          <div class="password-wrap"><input id="loginPwd" type="password" placeholder="Your password"
+              autocomplete="current-password"><button type="button" class="toggle"
+              onclick="togglePwd('loginPwd',this)">Show</button></div>
+        </div>
+        <div class="err" id="errMsg"></div><button class="btn" type="submit">Log in →</button>
+      </form>
+      <p class="foot">Don't have an account? <a href="signup.html">Create one</a></p>
+      <p class="foot"><a href="index.html">← Back to store</a></p>
+    </section>
+  </main>
+  <div class="toast" id="toast"></div>
+  <script>
+    const SIGNUPS_KEY = 'aurum_ai_signups_v1', CURRENT_KEY = 'aurum_ai_current_user_v1', LOGS_KEY = 'aurum_ai_logs_v1';
+    function $(id) { return document.getElementById(id) }
+    function loadJSON(k, fb) { try { return JSON.parse(localStorage.getItem(k)) ?? fb } catch { return fb } }
+    function saveJSON(k, v) { localStorage.setItem(k, JSON.stringify(v)) }
+    function getCurrentUser() { return loadJSON(CURRENT_KEY, null) }
+    function toast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200) }
+    async function sha256(text) { const buf = new TextEncoder().encode(text); const hash = await crypto.subtle.digest('SHA-256', buf); return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('') }
+    function togglePwd(id, btn) { const el = $(id); if (el.type === 'password') { el.type = 'text'; btn.textContent = 'Hide' } else { el.type = 'password'; btn.textContent = 'Show' } }
+    function showErr(m) { $('errMsg').textContent = m || '' }
+    function addLog(msg, type) { const logs = loadJSON(LOGS_KEY, []); logs.unshift({ time: new Date().toLocaleString(), msg, type: type || 'login' }); saveJSON(LOGS_KEY, logs.slice(0, 300)) }
+    function logoutBuyer() { localStorage.removeItem(CURRENT_KEY); toast('Signed out'); setTimeout(() => location.href = 'index.html#products', 500) }
+    function updateAuthNav() { const nav = $('authNav'); if (!nav) return; const currentUser = getCurrentUser(); if (currentUser && currentUser.email) { const name = (currentUser.name || currentUser.email || 'Buyer').split(' ')[0]; nav.innerHTML = `<a href="index.html">Hello, ${name}</a><a class="primary" href="javascript:void(0)" onclick="logoutBuyer()">Logout</a>`; return } nav.innerHTML = `<a href="signup.html">Sign Up</a><a class="primary" href="index.html">Store</a>` }
+    async function doLogin() { const email = $('loginEmail').value.trim().toLowerCase(); const pwd = $('loginPwd').value; showErr(''); if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showErr('Enter a valid email'); return } const signups = loadJSON(SIGNUPS_KEY, []); const user = signups.find(s => (s.email || '').toLowerCase() === email); if (!user) { showErr('No account found for this email.'); setTimeout(() => { if (confirm('Create a new account with this email?')) location.href = 'signup.html?email=' + encodeURIComponent(email) }, 180); return } if (user.passwordHash) { if (!pwd) { showErr('Enter your password'); return } const h = await sha256(pwd); if (h !== user.passwordHash) { showErr('Wrong password. Try again.'); return } } else if (pwd) { user.passwordHash = await sha256(pwd); saveJSON(SIGNUPS_KEY, signups) } saveJSON(CURRENT_KEY, user); addLog('Buyer login: ' + email, 'login'); toast('Login success'); setTimeout(() => location.href = 'index.html#products', 500) }
+    const params = new URLSearchParams(location.search); if (params.get('email')) $('loginEmail').value = params.get('email');
+    updateAuthNav();
+    if (getCurrentUser() && getCurrentUser().email) { const card = document.querySelector('.card'); if (card) card.insertAdjacentHTML('afterbegin', '<div class="hint" style="margin-top:0;margin-bottom:16px">You are already logged in. Use Logout if you want to switch accounts.</div>'); }
+  </script>
+</body>
+
+</html>

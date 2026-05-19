@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RoyalClue · Admin Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#070704;--bg2:#0d0d08;--card:#12120d;--card2:#18170f;--hover:#1f1d13;
+  --line:#2a281b;--line2:#3a3523;--text:#f7f2df;--muted:#a39b82;
+  --gold:#f5c542;--gold2:#d49a13;--gold3:#ffe08a;
+  --green:#22c55e;--red:#fb7185;--yellow:#facc15;--blue:#60a5fa;--purple:#a78bfa;
+  --display:'Playfair Display',serif;--body:'Inter',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{font-family:var(--body);background:radial-gradient(circle at 20% -10%,rgba(245,197,66,.18),transparent 32%),radial-gradient(circle at 90% 18%,rgba(245,197,66,.08),transparent 24%),linear-gradient(180deg,#060604,#0b0b07 55%,#050503);color:var(--text);min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background-image:linear-gradient(rgba(245,197,66,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(245,197,66,.035) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(to bottom,black,transparent 80%)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0}
+input,select,textarea{width:100%;padding:11px 12px;border:1px solid var(--line2);background:#090906;color:var(--text);border-radius:10px;outline:none;font-size:13px}
+input:focus,select:focus,textarea:focus{border-color:rgba(245,197,66,.7);box-shadow:0 0 0 3px rgba(245,197,66,.08)}
+a{color:inherit;text-decoration:none}
+
+.btn{border-radius:11px;padding:9px 16px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;justify-content:center;gap:7px;transition:.2s;white-space:nowrap}
+.btn-primary{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#090906;box-shadow:0 10px 30px rgba(245,197,66,.18)}
+.btn-primary:hover{transform:translateY(-1px);filter:brightness(1.05)}
+.btn-ghost{background:rgba(255,255,255,.04);border:1px solid var(--line2);color:var(--text)}
+.btn-ghost:hover{border-color:rgba(245,197,66,.55);color:var(--gold3);background:rgba(245,197,66,.06)}
+.btn-danger{background:rgba(251,113,133,.12);border:1px solid rgba(251,113,133,.3);color:var(--red)}
+.btn-danger:hover{background:rgba(251,113,133,.2)}
+.btn-success{background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);color:var(--green)}
+.btn-small{padding:6px 10px;font-size:11px}
+.icon-btn{width:34px;height:34px;display:grid;place-items:center;background:#0a0a06;border:1px solid var(--line2);color:var(--text);border-radius:10px}
+
+/* ===== LAYOUT ===== */
+.admin-shell{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;overflow:auto;background:linear-gradient(180deg,rgba(245,197,66,.05),rgba(255,255,255,.015));border-right:1px solid rgba(245,197,66,.12);padding:20px 14px;display:flex;flex-direction:column;gap:4px}
+.sidebar.collapsed{grid-template-columns:64px}
+.brand-block{display:flex;gap:11px;align-items:center;padding:6px 8px 18px;border-bottom:1px solid rgba(245,197,66,.1);margin-bottom:10px}
+.logo-mark{width:38px;height:38px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold3),var(--gold2));color:#080804;border-radius:11px;font-family:var(--display);font-size:22px;font-weight:800}
+.brand-block b{font-size:17px;letter-spacing:-.4px}.brand-block b span{color:var(--gold)}
+.brand-block small{display:block;color:var(--muted);font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:1px}
+.nav-section{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.2px;padding:14px 10px 6px}
+.nav-btn{background:transparent;color:var(--text);padding:9px 12px;border-radius:10px;text-align:left;font-weight:700;font-size:13px;display:flex;align-items:center;gap:10px;width:100%;transition:.15s}
+.nav-btn:hover{background:rgba(245,197,66,.07);color:var(--gold3)}
+.nav-btn.active{background:linear-gradient(135deg,rgba(255,224,138,.95),rgba(245,197,66,.92));color:#0a0a06;box-shadow:0 8px 22px rgba(245,197,66,.18)}
+.nav-btn .nav-icon{width:18px;display:inline-grid;place-items:center;font-size:14px}
+.nav-btn .nav-badge{margin-left:auto;background:rgba(0,0,0,.2);color:inherit;padding:1px 8px;border-radius:999px;font-size:10px;font-family:var(--mono)}
+.nav-btn.active .nav-badge{background:rgba(0,0,0,.18)}
+.sidebar .logout{margin-top:auto;border:1px solid rgba(251,113,133,.25);color:var(--red);background:rgba(251,113,133,.06)}
+
+.main{display:flex;flex-direction:column;min-width:0}
+.topbar{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:14px;padding:14px 30px;background:rgba(7,7,4,.85);backdrop-filter:blur(18px);border-bottom:1px solid rgba(245,197,66,.13)}
+.topbar h1{font-family:var(--display);font-size:24px;font-weight:800;letter-spacing:-.5px}
+.topbar .search{position:relative;flex:1;max-width:420px;margin-left:auto}
+.topbar .search input{padding-left:34px;background:rgba(255,255,255,.02);border-radius:999px}
+.topbar .search::before{content:"⌕";position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.topbar .user-chip{display:flex;align-items:center;gap:10px;padding:6px 12px 6px 6px;background:rgba(255,255,255,.04);border:1px solid var(--line2);border-radius:999px}
+.user-chip .avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold3),var(--gold));color:#080804;display:grid;place-items:center;font-weight:900;font-size:13px}
+.user-chip b{font-size:12px}.user-chip small{font-size:10px;color:var(--muted);display:block}
+
+.content{padding:24px 30px 60px;display:flex;flex-direction:column;gap:24px;max-width:1480px;width:100%}
+
+/* ===== SECTIONS ===== */
+.section{display:none}
+.section.active{display:block}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.section-head .title small{display:block;color:var(--gold);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:1.4px;margin-bottom:4px}
+.section-head .title h2{font-family:var(--display);font-size:34px;line-height:1;font-weight:800;letter-spacing:-1px}
+.section-head .title p{color:var(--muted);font-size:13px;margin-top:6px;max-width:520px}
+.section-head .actions{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ===== KPI CARDS ===== */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
+.kpi{position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));border:1px solid rgba(245,197,66,.12);border-radius:18px;padding:18px}
+.kpi:before{content:"";position:absolute;inset:-1px -1px auto -1px;height:3px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.7}
+.kpi .icon{position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:11px;display:grid;place-items:center;background:rgba(245,197,66,.1);color:var(--gold3);font-size:18px}
+.kpi small{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;font-weight:700}
+.kpi h2{font-family:var(--display);font-size:32px;line-height:1;color:var(--gold3);font-weight:800;margin:6px 0 4px}
+.kpi .delta{font-size:11px;font-weight:800;color:var(--green)}
+.kpi .delta.down{color:var(--red)}
+.kpi .delta .arrow{margin-right:3px}
+
+/* ===== PANEL ===== */
+.panel{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.015));border:1px solid rgba(245,197,66,.12);border-radius:18px;padding:18px;margin-bottom:18px}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.panel-head h3{font-family:var(--display);font-size:22px;font-weight:800;letter-spacing:-.5px}
+.panel-head h3 em{color:var(--gold);font-style:normal}
+.panel-head .actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* ===== CHARTS GRID ===== */
+.charts-grid{display:grid;grid-template-columns:2fr 1fr;gap:18px}
+@media(max-width:1100px){.charts-grid{grid-template-columns:1fr}}
+.chart-wrap{position:relative;height:260px}
+.chart-wrap.small{height:210px}
+
+/* ===== TABLE ===== */
+.table-wrap{overflow:auto;border-radius:12px;border:1px solid rgba(245,197,66,.08)}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{text-align:left;border-bottom:1px solid rgba(245,197,66,.08);padding:11px 13px;font-size:13px}
+th{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;background:rgba(255,255,255,.025);position:sticky;top:0;backdrop-filter:blur(8px);font-weight:700}
+tbody tr:hover{background:rgba(245,197,66,.04)}
+tbody tr.selected{background:rgba(245,197,66,.08)}
+td input,td select{padding:7px 9px;font-size:12px;border-radius:8px;min-width:80px}
+td .row-price{display:flex;align-items:center;gap:4px}
+td .row-price input{max-width:90px;text-align:right;font-family:var(--mono);font-weight:700;color:var(--gold3)}
+td .row-price .currency{color:var(--muted);font-family:var(--mono);font-size:11px}
+
+.checkbox{appearance:none;width:18px;height:18px;border:1.5px solid var(--line2);border-radius:5px;background:#0a0a06;cursor:pointer;position:relative;flex:0 0 auto}
+.checkbox:checked{background:linear-gradient(135deg,var(--gold3),var(--gold));border-color:var(--gold)}
+.checkbox:checked:after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;color:#080804;font-size:12px;font-weight:900}
+
+/* ===== TAB BAR FOR PRICING ===== */
+.tab-bar{display:flex;gap:6px;border:1px solid var(--line2);padding:5px;border-radius:14px;background:rgba(0,0,0,.25);width:fit-content;margin-bottom:18px}
+.tab-bar button{background:transparent;color:var(--muted);padding:9px 16px;border-radius:9px;font-weight:800;font-size:12px;transition:.18s;display:inline-flex;gap:6px;align-items:center}
+.tab-bar button:hover{color:var(--gold3)}
+.tab-bar button.active{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#080804}
+.tab-bar button .pill{background:rgba(0,0,0,.18);padding:1px 7px;border-radius:999px;font-family:var(--mono);font-size:10px}
+
+/* ===== PRICING SECTION ===== */
+.bulk-bar{display:flex;align-items:center;gap:10px;background:rgba(245,197,66,.06);border:1px solid rgba(245,197,66,.18);padding:12px 14px;border-radius:13px;margin-bottom:14px;flex-wrap:wrap}
+.bulk-bar b{font-family:var(--mono);font-size:11px;color:var(--gold3);text-transform:uppercase;letter-spacing:.8px}
+.bulk-bar .sel-count{font-family:var(--mono);background:rgba(0,0,0,.25);padding:3px 10px;border-radius:999px;font-size:11px}
+.bulk-bar input,.bulk-bar select{max-width:160px;padding:7px 10px;font-size:12px}
+.bulk-bar .divider{width:1px;height:22px;background:rgba(245,197,66,.2)}
+
+.price-tier-panel{display:none}
+.price-tier-panel.active{display:block}
+
+.tier-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:14px}
+.tier-summary>div{padding:12px 14px;background:rgba(255,255,255,.025);border:1px solid rgba(245,197,66,.1);border-radius:12px}
+.tier-summary small{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.8px}
+.tier-summary b{display:block;font-family:var(--display);font-size:22px;color:var(--gold3);margin-top:4px}
+
+/* ===== FILTER BAR ===== */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.filter-bar button{background:#10100b;color:var(--muted);border:1px solid var(--line);padding:7px 13px;border-radius:999px;font-size:12px;font-weight:700}
+.filter-bar button.active,.filter-bar button:hover{background:linear-gradient(135deg,var(--gold3),var(--gold));color:#080804;border-color:transparent}
+
+/* ===== STATUS PILLS ===== */
+.status{font-size:10px;font-weight:900;border-radius:999px;padding:3px 8px;display:inline-block}
+.status.pending{background:rgba(250,204,21,.13);color:var(--yellow)}
+.status.approved{background:rgba(34,197,94,.13);color:var(--green)}
+.status.rejected{background:rgba(251,113,133,.13);color:var(--red)}
+.status.delivered{background:rgba(96,165,250,.13);color:var(--blue)}
+
+/* ===== LOGO IMG ===== */
+.logo-img{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;padding:5px;background:#fff;flex:0 0 auto}
+.logo-img img{width:100%;height:100%;object-fit:contain}
+
+/* ===== MODAL ===== */
+.modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.78);place-items:center;padding:20px;backdrop-filter:blur(6px)}
+.modal.active{display:grid}
+.modal-card{width:min(540px,100%);max-height:90vh;overflow:auto;background:linear-gradient(180deg,#12120d,#0a0a06);border:1px solid rgba(245,197,66,.2);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:12px}
+.modal-card h3{font-family:var(--display);font-size:24px;font-weight:800}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* ===== TOAST ===== */
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(100px);z-index:300;background:#0d0d08;border:1px solid var(--gold);border-radius:13px;padding:11px 18px;font-weight:800;font-size:13px;opacity:0;transition:.25s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== AUTH GATE ===== */
+.auth-gate{position:fixed;inset:0;z-index:500;display:grid;place-items:center;background:radial-gradient(circle at 50% 30%,rgba(245,197,66,.12),transparent 60%),#040402;padding:20px}
+.auth-card{width:min(420px,100%);background:linear-gradient(180deg,#12120d,#0a0a06);border:1px solid rgba(245,197,66,.22);border-radius:22px;padding:30px;text-align:center}
+.auth-card .logo-mark{margin:0 auto 14px;width:50px;height:50px;font-size:24px}
+.auth-card h2{font-family:var(--display);font-size:28px;font-weight:800;margin-bottom:6px}
+.auth-card p{color:var(--muted);font-size:13px;margin-bottom:18px}
+.auth-card input{margin-bottom:10px;text-align:center}
+.auth-card .err{color:var(--red);font-size:12px;min-height:18px}
+
+/* ===== ACTIVITY FEED ===== */
+.activity-feed{display:flex;flex-direction:column;gap:8px;max-height:340px;overflow:auto}
+.activity-item{display:flex;gap:11px;align-items:start;padding:10px 12px;background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:11px}
+.activity-item .dot{width:9px;height:9px;border-radius:50%;background:var(--gold);margin-top:5px;box-shadow:0 0 10px var(--gold);flex:0 0 auto}
+.activity-item small{display:block;color:var(--muted);font-family:var(--mono);font-size:10px;margin-top:2px}
+.activity-item p{font-size:12px;line-height:1.4}
+.activity-item.product .dot{background:var(--blue);box-shadow:0 0 10px var(--blue)}
+.activity-item.order .dot{background:var(--green);box-shadow:0 0 10px var(--green)}
+.activity-item.signup .dot{background:var(--purple);box-shadow:0 0 10px var(--purple)}
+.activity-item.admin .dot{background:var(--gold)}
+
+/* ===== EMPTY ===== */
+.empty{padding:40px 20px;text-align:center;color:var(--muted);font-size:13px}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .admin-shell{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .kpi-grid{grid-template-columns:repeat(2,1fr)}
+  .tier-summary{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- AUTH GATE -->
+<div class="auth-gate" id="authGate">
+  <div class="auth-card">
+    <div class="logo-mark">A</div>
+    <h2>Admin Access</h2>
+    <p>Enter the admin secret to continue.</p>
+    <input id="adminPwd" type="password" placeholder="Secret code" onkeydown="if(event.key==='Enter')tryUnlock()" autofocus>
+    <div class="err" id="authErr"></div>
+    <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="tryUnlock()">Unlock Dashboard</button>
+    <p style="margin-top:14px;font-size:11px"><a href="index.html" style="color:var(--gold)">← Back to store</a></p>
+  </div>
+</div>
+
+<div class="admin-shell" id="shell" style="display:none">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand-block">
+      <div class="logo-mark">A</div>
+      <div><b><span>Royal</span>Clue</b><small>Admin Panel</small></div>
+    </div>
+
+    <div class="nav-section">Overview</div>
+    <button class="nav-btn active" data-section="overview"><span class="nav-icon">◆</span>Dashboard</button>
+    <button class="nav-btn" data-section="orders"><span class="nav-icon">✦</span>Orders<span class="nav-badge" id="navOrders">0</span></button>
+    <button class="nav-btn" data-section="signups"><span class="nav-icon">◐</span>Customers<span class="nav-badge" id="navSignups">0</span></button>
+
+    <div class="nav-section">Catalog</div>
+    <button class="nav-btn" data-section="products"><span class="nav-icon">◉</span>Products<span class="nav-badge" id="navProducts">0</span></button>
+    <button class="nav-btn" data-section="pricing"><span class="nav-icon">$</span>Pricing Center</button>
+    <button class="nav-btn" data-section="stock"><span class="nav-icon">⌗</span>Stock</button>
+
+    <div class="nav-section">Insights</div>
+    <button class="nav-btn" data-section="analytics"><span class="nav-icon">⌬</span>Analytics</button>
+    <button class="nav-btn" data-section="sources"><span class="nav-icon">↗</span>Visitor Sources</button>
+
+    <div class="nav-section">System</div>
+    <button class="nav-btn" data-section="wallets"><span class="nav-icon">◈</span>Crypto Wallets</button>
+    <button class="nav-btn" data-section="settings"><span class="nav-icon">⚙</span>Settings</button>
+    <button class="nav-btn" data-section="logs"><span class="nav-icon">≡</span>Activity Logs</button>
+
+    <button class="nav-btn logout" onclick="adminLogout()" style="margin-top:auto"><span class="nav-icon">⎋</span>Lock dashboard</button>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <h1 id="pageTitle">Dashboard</h1>
+      <div class="search">
+        <input id="globalSearch" placeholder="Search products, orders, customers…" oninput="handleGlobalSearch(event)">
+      </div>
+      <a href="index.html" class="btn btn-ghost btn-small">↗ View store</a>
+      <div class="user-chip">
+        <div class="avatar">A</div>
+        <div><b>Admin</b><small>Owner</small></div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ============ OVERVIEW ============ -->
+      <section class="section active" id="section-overview">
+        <div class="section-head">
+          <div class="title"><small>Snapshot</small><h2>Welcome back, <em id="welcomeName">Admin</em></h2><p>Live KPIs from your storefront — every edit you make here updates the website instantly.</p></div>
+          <div class="actions">
+            <button class="btn btn-ghost btn-small" onclick="exportAll()">↓ Export JSON</button>
+            <button class="btn btn-primary btn-small" onclick="syncGooglePrices()">↻ Sync live prices</button><button class="btn btn-ghost btn-small" onclick="applyDiscountPricingAll()">Apply 50% / 30%</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi"><div class="icon">$</div><small>Revenue</small><h2 id="kpiRevenue">$0</h2><div class="delta"><span class="arrow">↑</span><span id="kpiRevDelta">0%</span> vs last week</div></div>
+          <div class="kpi"><div class="icon">✦</div><small>Orders</small><h2 id="kpiOrders">0</h2><div class="delta"><span class="arrow">↑</span><span id="kpiOrdersDelta">0</span> new</div></div>
+          <div class="kpi"><div class="icon">⌬</div><small>Pending Approval</small><h2 id="kpiPending">0</h2><div class="delta down"><span class="arrow">⏵</span>Awaiting review</div></div>
+          <div class="kpi"><div class="icon">◐</div><small>Customers</small><h2 id="kpiCustomers">0</h2><div class="delta"><span class="arrow">↑</span><span id="kpiCustDelta">0</span> today</div></div>
+        </div>
+
+        <div class="charts-grid">
+          <div class="panel">
+            <div class="panel-head"><h3>Sales <em>overview</em></h3>
+              <div class="actions">
+                <button class="btn btn-ghost btn-small active" onclick="setRange(7, event)">7d</button>
+                <button class="btn btn-ghost btn-small" onclick="setRange(14, event)">14d</button>
+                <button class="btn btn-ghost btn-small" onclick="setRange(30, event)">30d</button>
+              </div>
+            </div>
+            <div class="chart-wrap"><canvas id="salesChart"></canvas></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Top <em>sources</em></h3></div>
+            <div class="chart-wrap small"><canvas id="sourceChart"></canvas></div>
+          </div>
+        </div>
+
+        <div class="charts-grid">
+          <div class="panel">
+            <div class="panel-head"><h3>Top <em>products</em></h3><span style="color:var(--muted);font-size:12px">By total sales</span></div>
+            <div class="chart-wrap"><canvas id="productChart"></canvas></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Recent <em>activity</em></h3></div>
+            <div class="activity-feed" id="activityFeed"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ ORDERS ============ -->
+      <section class="section" id="section-orders">
+        <div class="section-head">
+          <div class="title"><small>Sales</small><h2>Orders <em>queue</em></h2><p>Approve, deliver or reject buyer payments. Updates push to the storefront immediately.</p></div>
+          <div class="actions">
+            <button class="btn btn-ghost btn-small" onclick="clearOrders()">Clear all</button>
+            <button class="btn btn-ghost btn-small" onclick="exportOrders()">↓ CSV</button>
+          </div>
+        </div>
+        <div class="filter-bar" id="orderFilters">
+          <button class="active" onclick="filterOrders('all', event)">All</button>
+          <button onclick="filterOrders('Pending', event)">Pending</button>
+          <button onclick="filterOrders('Approved', event)">Approved</button>
+          <button onclick="filterOrders('Delivered', event)">Delivered</button>
+          <button onclick="filterOrders('Rejected', event)">Rejected</button>
+        </div>
+        <div class="panel">
+          <div class="table-wrap"><table>
+            <thead><tr><th>Order ID</th><th>Buyer</th><th>Type</th><th>Items</th><th>Total</th><th>Payment</th><th>TX</th><th>Source</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="ordersTable"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ============ SIGNUPS ============ -->
+      <section class="section" id="section-signups">
+        <div class="section-head">
+          <div class="title"><small>People</small><h2>Customer <em>signups</em></h2><p>Every signup with role, budget and looking-for info — your warm lead pipeline.</p></div>
+          <div class="actions">
+            <button class="btn btn-ghost btn-small" onclick="clearSignups()">Clear all</button>
+            <button class="btn btn-ghost btn-small" onclick="exportSignups()">↓ CSV</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="table-wrap"><table>
+            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Looking for</th><th>Budget</th><th>Source</th><th>Contact</th><th>When</th></tr></thead>
+            <tbody id="signupsTable"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ============ PRODUCTS ============ -->
+      <section class="section" id="section-products">
+        <div class="section-head">
+          <div class="title"><small>Catalog</small><h2>All <em>products</em></h2><p>Edit any field inline — changes save instantly and the storefront updates in real time.</p></div>
+          <div class="actions">
+            <button class="btn btn-ghost btn-small" onclick="resetProductsToDefault()">Reset defaults</button>
+            <button class="btn btn-primary btn-small" onclick="openProductModal()">+ Add product</button>
+          </div>
+        </div>
+
+        <div class="filter-bar" id="productCatFilters"></div>
+
+        <div class="bulk-bar">
+          <input type="checkbox" class="checkbox" id="selectAllProducts" onchange="toggleSelectAll(this.checked)">
+          <b>Selection:</b><span class="sel-count" id="selCount">0 selected</span>
+          <div class="divider"></div>
+          <b>Bulk delete:</b><button class="btn btn-danger btn-small" onclick="bulkDelete()">Delete selected</button>
+          <div class="divider"></div>
+          <b>Randomize stock:</b><button class="btn btn-ghost btn-small" onclick="bulkRandomStock()">300–4K</button>
+        </div>
+
+        <div class="panel" style="padding:0;overflow:hidden">
+          <div class="table-wrap"><table>
+            <thead><tr>
+              <th style="width:36px"></th><th style="width:50px"></th><th>Name / Brand</th><th>Category</th>
+              <th>Market</th><th>Single 50%</th><th>Bulk/Resell 30%</th><th>Stock</th><th>Views</th><th>Sales</th><th>Action</th>
+            </tr></thead>
+            <tbody id="productsTable"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ============ PRICING CENTER ============ -->
+      <section class="section" id="section-pricing">
+        <div class="section-head">
+          <div class="title"><small>Targeted control</small><h2>Pricing <em>center</em></h2><p>Two sell rates only: Single for normal buyers, and Bulk/Resell for discounted orders.</p></div>
+        </div>
+
+        <div class="tab-bar two-tabs">
+          <button class="active" data-tier="single" onclick="switchTier('single', event)">Single <span class="pill">retail</span></button>
+          <button data-tier="reseller" onclick="switchTier('reseller', event)">Bulk/Resell <span class="pill">30%</span></button>
+        </div>
+
+        <!-- SINGLE -->
+        <div class="price-tier-panel active" id="tier-single">
+          <div class="tier-summary">
+            <div><small>Avg Single $</small><b id="avgSingle">$0</b></div>
+            <div><small>Min</small><b id="minSingle">$0</b></div>
+            <div><small>Max</small><b id="maxSingle">$0</b></div>
+            <div><small>Products</small><b id="cntSingle">0</b></div>
+          </div>
+          <div class="bulk-bar">
+            <input type="checkbox" class="checkbox" id="selAllSingle" onchange="toggleTierSelectAll('single', this.checked)">
+            <b>Selected:</b><span class="sel-count" id="selCountSingle">0</span>
+            <div class="divider"></div>
+            <b>Adjust:</b>
+            <select id="singleOp"><option value="set">Set price = $</option><option value="add">Add $</option><option value="sub">Subtract $</option><option value="pctUp">+ %</option><option value="pctDown">− %</option></select>
+            <input type="number" id="singleVal" placeholder="value" step="0.01">
+            <button class="btn btn-primary btn-small" onclick="applyTierBulk('single')">Apply to selected</button>
+            <div class="divider"></div>
+            <button class="btn btn-ghost btn-small" onclick="resyncFromSingle()">Auto-sync bulk/resell</button>
+          </div>
+          <div class="panel" style="padding:0;overflow:hidden">
+            <div class="table-wrap"><table>
+              <thead><tr><th style="width:36px"></th><th style="width:50px"></th><th>Product</th><th>Category</th><th>Current Single $</th><th>Old (×1.35)</th><th>Stock</th><th>Sales</th></tr></thead>
+              <tbody id="tierSingleTable"></tbody>
+            </table></div>
+          </div>
+        </div>
+
+        <!-- BULK/RESELL -->
+        <div class="price-tier-panel" id="tier-reseller">
+          <div class="tier-summary">
+            <div><small>Avg Bulk/Resell $</small><b id="avgReseller">$0</b></div>
+            <div><small>Min</small><b id="minReseller">$0</b></div>
+            <div><small>Max</small><b id="maxReseller">$0</b></div>
+            <div><small>Avg margin vs Single</small><b id="marginReseller">0%</b></div>
+          </div>
+          <div class="bulk-bar">
+            <input type="checkbox" class="checkbox" id="selAllReseller" onchange="toggleTierSelectAll('reseller', this.checked)">
+            <b>Selected:</b><span class="sel-count" id="selCountReseller">0</span>
+            <div class="divider"></div>
+            <b>Adjust:</b>
+            <select id="resellerOp"><option value="set">Set price = $</option><option value="add">Add $</option><option value="sub">Subtract $</option><option value="pctUp">+ %</option><option value="pctDown">− %</option><option value="pctOfSingle">% of Single</option></select>
+            <input type="number" id="resellerVal" placeholder="value">
+            <button class="btn btn-primary btn-small" onclick="applyTierBulk('reseller')">Apply to selected</button>
+          </div>
+          <div class="panel" style="padding:0;overflow:hidden">
+            <div class="table-wrap"><table>
+              <thead><tr><th style="width:36px"></th><th style="width:50px"></th><th>Product</th><th>Single $</th><th>Bulk/Resell $</th><th>Save vs Single</th><th>Stock</th></tr></thead>
+              <tbody id="tierResellerTable"></tbody>
+            </table></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ STOCK ============ -->
+      <section class="section" id="section-stock">
+        <div class="section-head">
+          <div class="title"><small>Inventory</small><h2>Stock <em>levels</em></h2><p>Adjust stock per product. Low-stock items glow red on the storefront.</p></div>
+          <div class="actions">
+            <button class="btn btn-ghost btn-small" onclick="bulkRandomStock(true)">Randomize all 300–4K</button>
+          </div>
+        </div>
+        <div class="panel" style="padding:0;overflow:hidden">
+          <div class="table-wrap"><table>
+            <thead><tr><th style="width:50px"></th><th>Product</th><th>Category</th><th>Stock</th><th>Status</th><th>Sold</th><th>Action</th></tr></thead>
+            <tbody id="stockTable"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ============ ANALYTICS ============ -->
+      <section class="section" id="section-analytics">
+        <div class="section-head">
+          <div class="title"><small>Performance</small><h2>Product <em>analytics</em></h2><p>Top sellers, click-through and source-wise breakdowns.</p></div>
+          <div class="actions">
+            <button class="btn btn-ghost btn-small" onclick="clearProductAnalytics()">Clear analytics</button>
+          </div>
+        </div>
+
+        <div class="charts-grid">
+          <div class="panel">
+            <div class="panel-head"><h3>Views vs <em>clicks</em></h3></div>
+            <div class="chart-wrap"><canvas id="viewsClicksChart"></canvas></div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><h3>Category <em>mix</em></h3></div>
+            <div class="chart-wrap small"><canvas id="catMixChart"></canvas></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3>Top performers</h3></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Product</th><th>Sales</th><th>Revenue</th><th>Clicks</th><th>Views</th><th>CTR</th><th>Top source</th></tr></thead>
+            <tbody id="perfTable"></tbody>
+          </table></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3>Latest product events</h3></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>When</th><th>Event</th><th>Product</th><th>Source</th><th>Amount</th></tr></thead>
+            <tbody id="eventsTable"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ============ SOURCES ============ -->
+      <section class="section" id="section-sources">
+        <div class="section-head">
+          <div class="title"><small>Traffic</small><h2>Visitor <em>sources</em></h2><p>Where your buyers come from — direct, UTM, referrer, and recent visits.</p></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>By source</h3></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Source</th><th>Visits</th><th>Share</th></tr></thead>
+            <tbody id="sourceTable"></tbody>
+          </table></div>
+        </div>
+        <div class="panel">
+          <div class="panel-head"><h3>Recent visits</h3></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Time</th><th>Source</th><th>Page</th><th>Referrer</th></tr></thead>
+            <tbody id="visitTable"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ============ WALLETS ============ -->
+      <section class="section" id="section-wallets">
+        <div class="section-head">
+          <div class="title"><small>Crypto</small><h2>Wallet <em>addresses</em></h2><p>Live wallets shown on the payment page. Updates are immediate.</p></div>
+        </div>
+        <div class="panel" id="walletsPanel"></div>
+      </section>
+
+      <!-- ============ SETTINGS ============ -->
+      <section class="section" id="section-settings">
+        <div class="section-head">
+          <div class="title"><small>Site config</small><h2>General <em>settings</em></h2><p>Support email, payment notice, default stock range.</p></div>
+        </div>
+        <div class="panel">
+          <label style="font-size:12px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.8px">Support email</label>
+          <input id="setEmail" placeholder="support@royalclue.com" style="margin:8px 0 14px">
+          <label style="font-size:12px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:.8px">Payment page notice</label>
+          <textarea id="setNotice" rows="3" placeholder="Admin will verify payment and deliver by email." style="margin:8px 0 14px"></textarea>
+          <div class="form-row">
+            <div><label style="font-size:12px;color:var(--muted)">Min default stock</label><input id="setStockMin" type="number" value="300" style="margin-top:6px"></div>
+            <div><label style="font-size:12px;color:var(--muted)">Max default stock</label><input id="setStockMax" type="number" value="4000" style="margin-top:6px"></div>
+          </div>
+          <button class="btn btn-primary" style="margin-top:14px" onclick="saveSettings()">Save settings</button>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h3>Admin password</h3><span style="color:var(--muted);font-size:12px">Current secret used on the gate</span></div>
+          <div class="form-row">
+            <input id="newPwd" type="password" placeholder="New secret">
+            <input id="confirmPwd" type="password" placeholder="Confirm secret">
+          </div>
+          <button class="btn btn-primary" style="margin-top:12px" onclick="changeAdminPwd()">Update admin password</button>
+        </div>
+      </section>
+
+      <!-- ============ LOGS ============ -->
+      <section class="section" id="section-logs">
+        <div class="section-head">
+          <div class="title"><small>Audit</small><h2>Activity <em>logs</em></h2><p>Every admin action and system event.</p></div>
+          <div class="actions">
+            <button class="btn btn-ghost btn-small" onclick="clearLogs()">Clear logs</button>
+            <button class="btn btn-ghost btn-small" onclick="exportLogs()">↓ Export</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="table-wrap"><table>
+            <thead><tr><th>Time</th><th>Type</th><th>Details</th></tr></thead>
+            <tbody id="logsTable"></tbody>
+          </table></div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- ADD PRODUCT MODAL -->
+<div class="modal" id="productModal">
+  <div class="modal-card">
+    <div class="panel-head"><h3>Add new <em>product</em></h3><button class="icon-btn" onclick="closeProductModal()">✕</button></div>
+    <input id="np_name" placeholder="Product name (e.g. ChatGPT Pro)">
+    <input id="np_brand" placeholder="Brand (e.g. OpenAI)">
+    <div class="form-row">
+      <select id="np_cat"><option>AI</option><option>Coding</option><option>Automation</option><option>Design</option><option>Video</option><option>Voice</option><option>Productivity</option><option>Marketing</option><option>Research</option><option>Writing</option></select>
+      <input id="np_domain" placeholder="domain (openai.com)">
+    </div>
+    <div class="form-row">
+      <input id="np_single" type="number" placeholder="Single $" step="0.01">
+      <input id="np_reseller" type="number" placeholder="Bulk/Resell $ (auto)" step="0.01">
+    </div>
+    <div class="form-row">
+      <input id="np_stock" type="number" placeholder="Stock (auto 300-4K)">
+    </div>
+    <input id="np_logo" placeholder="Custom logo URL (optional)">
+    <input id="np_desc" placeholder="Short description">
+    <button class="btn btn-primary" onclick="saveNewProduct()">Save product</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="admin.js"></script>
+</body>
+</html>

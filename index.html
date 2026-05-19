@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RoyalClue — Premium AI Accounts Marketplace | royalclue.com</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <script>window.BEMADY_API_BASE_URL = "https://royalclue.com/api";</script>
+</head>
+<body class="brilliant-style">
+  <nav class="navbar">
+    <div class="logo" onclick="showStore()">
+      <div class="logo-mark">R</div>
+      <div><span>Royal</span>Clue</div>
+    </div>
+    <ul class="nav-links">
+      <li><a onclick="setBuyer('single')">Single</a></li>
+      <li><a onclick="setBuyer('reseller')">Resell/Bulk</a></li>
+      <li><a onclick="openSignupPage()">Sign Up</a></li>
+      <li><a onclick="openLoginPage()">Login</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="btn btn-ghost" onclick="openSignupPage()">Sign Up</button>
+      <button class="btn btn-primary" onclick="openLoginPage()">Login</button>
+    </div>
+  </nav>
+
+
+  <div class="catalog-mega" id="catalogMega">
+    <div class="catalog-mega-inner">
+      <div class="catalog-mega-top">
+        <button class="catalog-tab active" type="button">Catalog <span>⌃</span></button>
+        <button class="catalog-tab muted" type="button" onclick="scrollCatalogResources()">Resources <span>⌄</span></button>
+      </div>
+
+      <div class="catalog-grid">
+        <article class="catalog-card" onclick="catalogJump('AI','chatgpt')">
+          <img src="https://cdn.simpleicons.org/openai/10A37F" alt="AI">
+          <span>▶</span>
+          <h3>AI Tools</h3>
+          <div><button onclick="event.stopPropagation();catalogJump('AI','chatgpt')">Plans</button><button onclick="event.stopPropagation();catalogJump('AI','claude')">Learn</button></div>
+        </article>
+        <article class="catalog-card" onclick="catalogJump('Coding','cursor')">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg" alt="Coding">
+          <span>▶</span>
+          <h3>Coding</h3>
+          <div><button onclick="event.stopPropagation();catalogJump('Coding','copilot')">Plans</button><button onclick="event.stopPropagation();catalogJump('Coding','cursor')">Learn</button></div>
+        </article>
+        <article class="catalog-card" onclick="catalogJump('Automation','zapier')">
+          <img src="https://cdn.simpleicons.org/zapier/FF4F00" alt="Automation">
+          <span>▶</span>
+          <h3>Automation</h3>
+          <div><button onclick="event.stopPropagation();catalogJump('Automation','make')">Plans</button><button onclick="event.stopPropagation();catalogJump('Automation','n8n')">Learn</button></div>
+        </article>
+        <article class="catalog-card" onclick="catalogJump('Design','canva')">
+          <img src="https://cdn.simpleicons.org/canva/00C4CC" alt="Design">
+          <span>▶</span>
+          <h3>Design</h3>
+          <div><button onclick="event.stopPropagation();catalogJump('Design','figma')">Plans</button><button onclick="event.stopPropagation();catalogJump('Design','adobe')">Learn</button></div>
+        </article>
+        <article class="catalog-card" onclick="catalogJump('Video','runway')">
+          <img src="https://cdn.simpleicons.org/capcut/000000" alt="Video">
+          <span>▶</span>
+          <h3>Video</h3>
+          <div><button onclick="event.stopPropagation();catalogJump('Video','heygen')">Plans</button><button onclick="event.stopPropagation();catalogJump('Video','capcut')">Learn</button></div>
+        </article>
+        <article class="catalog-card" onclick="catalogJump('Voice','elevenlabs')">
+          <img src="https://cdn.simpleicons.org/elevenlabs/111111" alt="Voice">
+          <span>▶</span>
+          <h3>Voice</h3>
+          <div><button onclick="event.stopPropagation();catalogJump('Voice','voice')">Plans</button><button onclick="event.stopPropagation();catalogJump('Voice','murf')">Learn</button></div>
+        </article>
+        <article class="catalog-card" onclick="catalogJump('Productivity','notion')">
+          <img src="https://cdn.simpleicons.org/notion/000000" alt="Productivity">
+          <span>▶</span>
+          <h3>Productivity</h3>
+          <div><button onclick="event.stopPropagation();catalogJump('Productivity','notion')">Plans</button><button onclick="event.stopPropagation();catalogJump('Productivity','otter')">Learn</button></div>
+        </article>
+        <article class="catalog-card" onclick="catalogJump('Marketing','jasper')">
+          <img src="https://cdn.simpleicons.org/googleads/4285F4" alt="Marketing">
+          <span>▶</span>
+          <h3>Marketing</h3>
+          <div><button onclick="event.stopPropagation();catalogJump('Marketing','copy')">Plans</button><button onclick="event.stopPropagation();catalogJump('Marketing','seo')">Learn</button></div>
+        </article>
+        <article class="catalog-card" onclick="catalogJump('Research','perplexity')">
+          <img src="https://cdn.simpleicons.org/perplexity/20B8CD" alt="Research">
+          <span>▶</span>
+          <h3>Research</h3>
+          <div><button onclick="event.stopPropagation();catalogJump('Research','perplexity')">Plans</button><button onclick="event.stopPropagation();catalogJump('Research','research')">Learn</button></div>
+        </article>
+        <article class="catalog-card" onclick="catalogJump('Writing','grammarly')">
+          <img src="https://cdn.simpleicons.org/grammarly/15C39A" alt="Writing">
+          <span>▶</span>
+          <h3>Writing</h3>
+          <div><button onclick="event.stopPropagation();catalogJump('Writing','jasper')">Plans</button><button onclick="event.stopPropagation();catalogJump('Writing','quillbot')">Learn</button></div>
+        </article>
+        <article class="catalog-card" onclick="catalogJump('AI','ai prompts')">
+          <img src="https://cdn.simpleicons.org/openai/10A37F" alt="AI Prompts">
+          <span>▶</span>
+          <h3>AI Prompts</h3>
+          <div><button onclick="event.stopPropagation();catalogJump('AI','prompt')">Plans</button><button onclick="event.stopPropagation();catalogJump('AI','ai')">Learn</button></div>
+        </article>
+        <article class="catalog-card" onclick="catalogJump('Coding','terminal')">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" alt="Terminal" loading="lazy" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/4/4d/Terminal_icon.svg'">
+          <span>▶</span>
+          <h3>Terminal</h3>
+          <div><button onclick="event.stopPropagation();catalogJump('Coding','terminal')">Plans</button><button onclick="event.stopPropagation();catalogJump('Coding','dev')">Learn</button></div>
+        </article>
+      </div>
+
+      <div class="catalog-footer">
+        <span><b>See all plans</b> or pick a category above to start browsing.</span>
+        <button onclick="closeCatalogMenu();document.getElementById('products').scrollIntoView({behavior:'smooth'})">Open Marketplace</button>
+      </div>
+    </div>
+  </div>
+
+
+  <section class="coddy-catalog-home" id="coddyCatalog">
+    <div class="coddy-catalog-tabs">
+      <div class="coddy-tab-left">
+        <button class="coddy-tab active" id="coddyCatalogToggleBtn" onclick="toggleCoddyCatalogBox(event)">Catalog <span id="catalogToggleSymbol">−</span></button>
+        <button class="coddy-tab" onclick="scrollToCatalogResources()">Resources <span>⌄</span></button>
+      </div>
+      <div class="coddy-window-actions" aria-label="Catalog display options">
+        <button class="coddy-window-btn" type="button" onclick="minimizeCoddyCatalog(event)" title="Hide catalog">− Minimum</button>
+        <button class="coddy-window-btn primary" type="button" onclick="toggleCoddyFullPage(event)" id="coddyFullPageBtn" title="Open full page">Full page</button>
+      </div>
+    </div>
+
+
+    <div class="coddy-language-grid">
+      <article class="coddy-language-card" onclick="openLanguagePlayground('python')"><img src="https://www.python.org/static/community_logos/python-logo-master-v3-TM.png" alt="Python" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg'"><button class="play-mini">▶</button><h3>Python</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('python')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('python')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('javascript')"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6a/JavaScript-logo.png" alt="JavaScript" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg'"><button class="play-mini">▶</button><h3>JavaScript</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('javascript')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('javascript')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('java')"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" alt="Java" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original-wordmark.svg'"><button class="play-mini">▶</button><h3>Java</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('java')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('java')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('cpp')"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-line.svg'"><button class="play-mini">▶</button><h3>C++</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('cpp')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('cpp')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('typescript')"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-plain.svg'"><button class="play-mini">▶</button><h3>TypeScript</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('typescript')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('typescript')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('c')"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-original.svg" alt="C" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/c/c-line.svg'"><button class="play-mini">▶</button><h3>C</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('c')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('c')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('csharp')"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" alt="C#" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-line.svg'"><button class="play-mini">▶</button><h3>C#</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('csharp')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('csharp')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('go')"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original.svg" alt="Go" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original-wordmark.svg'"><button class="play-mini">▶</button><h3>Go</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('go')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('go')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('ruby')"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ruby/ruby-original.svg" alt="Ruby" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ruby/ruby-plain.svg'"><button class="play-mini">▶</button><h3>Ruby</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('ruby')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('ruby')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('rust')"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-original.svg" alt="Rust" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/rust/rust-plain.svg'"><button class="play-mini">▶</button><h3>Rust</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('rust')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('rust')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('php')"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-plain.svg'"><button class="play-mini">▶</button><h3>PHP</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('php')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('php')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('dart')"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-original.svg" alt="Dart" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dart/dart-plain.svg'"><button class="play-mini">▶</button><h3>Dart</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('dart')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('dart')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('lua')"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/lua/lua-original.svg" alt="Lua" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/lua/lua-plain.svg'"><button class="play-mini">▶</button><h3>Lua</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('lua')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('lua')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('swift')"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-original.svg" alt="Swift" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/swift/swift-plain.svg'"><button class="play-mini">▶</button><h3>Swift</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('swift')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('swift')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('web')"><div class="logo-pair"><img src="https://www.w3.org/html/logo/downloads/HTML5_Logo_512.png" alt="HTML5" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg'"><img src="https://www.w3.org/Style/CSS/PNG/logo-css-512.png" alt="CSS3" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg'"></div><button class="play-mini">▶</button><h3>Web</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('web')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('web')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('sql')"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="SQL" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg'"><button class="play-mini">▶</button><h3>SQL</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('sql')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('sql')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('r')"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/r/r-original.svg" alt="R" loading="lazy" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/gh/devicons/devicon/icons/r/r-plain.svg'"><button class="play-mini">▶</button><h3>R</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('r')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('r')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('terminal')"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" alt="Terminal" loading="lazy" onerror="this.onerror=null;this.src='https://upload.wikimedia.org/wikipedia/commons/4/4d/Terminal_icon.svg'"><button class="play-mini">▶</button><h3>Terminal</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('terminal')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('terminal')">Code</button></div></article>
+      <article class="coddy-language-card" onclick="openLanguagePlayground('verilog')"><img src="assets/logos/verilog.svg" alt="Verilog" loading="lazy" onerror="this.onerror=null;this.src='assets/logos/verilog.svg'"><button class="play-mini">▶</button><h3>Verilog</h3><div><button onclick="event.stopPropagation();openLanguagePlayground('verilog')">Learn</button><button onclick="event.stopPropagation();openLanguagePlayground('verilog')">Code</button></div></article>
+    </div>
+
+
+    <div class="coddy-catalog-bottom" id="catalogResources">
+      <p>See <button onclick="coddyPick('All','','all plans')">all plans</button> or pick a language above to start browsing.</p>
+    </div>
+  </section>
+
+
+  <section class="language-playground" id="languagePlayground">
+    <aside class="language-sidebar" id="languageSidebar">
+      <div class="sidebar-title">
+        <span>LANGUAGES</span>
+        <button class="sidebar-toggle" onclick="toggleLanguageSidebar()" type="button" title="Toggle sidebar">−</button>
+      </div>
+      <div id="languageList"></div>
+    </aside>
+
+    <div class="playground-main">
+      <div class="playground-head">
+        <div>
+          <h2 id="playgroundTitle">Python Playground</h2>
+          <p id="playgroundSubtitle">Write, learn, and understand basic code snippets — no setup required.</p>
+        </div>
+        <button class="btn btn-ghost" onclick="scrollPlaygroundDocs()">Read Docs</button>
+      </div>
+
+      <div class="code-window">
+        <div class="code-toolbar">
+          <span id="playgroundFile">main.py</span>
+          <div>
+            <button onclick="copyPlaygroundCode()">Copy</button>
+            <button onclick="resetPlaygroundCode()">Reset</button>
+            <button class="run-btn" onclick="runPlaygroundCode()">▷ Run</button>
+          </div>
+        </div>
+
+        <div class="stdin-box">
+          <b>STDIN</b>
+          <span>Optional input — one line per value</span>
+          <textarea id="playgroundInput"></textarea>
+        </div>
+
+        <div class="editor-output-grid">
+          <div class="editor-box">
+            <div class="editor-lines" id="playgroundLines">1</div>
+            <textarea id="playgroundCode" spellcheck="false"></textarea>
+          </div>
+          <div class="output-box">
+            <div class="output-head">OUTPUT</div>
+            <pre id="playgroundOutput">Click Run to see the output here.</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="playground-docs" id="playgroundDocs">
+        <h3 id="docsTitle">Run Python online in your browser</h3>
+        <p id="docsText">A beginner-friendly playground with basic code and explanation.</p>
+        <div class="lesson-cards" id="lessonCards"></div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="learn-topic-bar">
+    <button onclick="quickOpen('AI','ai','AI Tools Review')">
+      <span class="topic-icon red">◆</span> AI Tools Review
+    </button>
+    <button onclick="quickOpen('Coding','html','Basic HTML')">
+      <span class="topic-icon violet">⌬</span> Basic HTML
+    </button>
+    <button onclick="quickOpen('Coding','python','Learn Python')">
+      <span class="topic-icon purple">⌁</span> Learn Python
+    </button>
+    <button onclick="quickOpen('Automation','automation','Automation')">
+      <span class="topic-icon gold">●</span> Automation
+    </button>
+    <button onclick="quickOpen('Research','research','Data Analysis')">
+      <span class="topic-icon orange">◒</span> Data Analysis
+    </button>
+    <button onclick="quickOpen('Coding','coder','Coding & AI')">
+      <span class="topic-icon blue">⌘</span> Coding & AI
+    </button>
+  </section>
+
+
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="drawer-head">
+      <div>
+        <h3>Your order</h3>
+        <p>Add paid AI plans, then submit payment proof.</p>
+      </div>
+      <button onclick="closeCart()" class="icon-btn">✕</button>
+    </div>
+    <div id="cartItems"></div>
+    <div class="box total-box">
+      <p><span>Subtotal</span><b id="cartSubtotal">$0</b></p>
+      <p><span>Order Type</span><b id="cartBuyerType">Single</b></p>
+      <button class="btn btn-coral full" onclick="openPaymentPage()">Continue to Payment →</button>
+    </div>
+  </aside>
+
+  <main id="storefront">
+    <section class="hero brilliant-hero">
+      <div class="hero-content-grid">
+        <div class="hero-left">
+          <h1>
+            Your gateway to top AI tools—<br>
+            <em>pay less, get more, all in one place.</em>
+          </h1>
+          <p>
+            Premium AI plans, smarter prices—compare, pick, and save without the hassle.
+          </p>
+          <div class="hero-actions hero-main-actions">
+            <button class="btn btn-coral hero-catalog-btn" onclick="scrollToCoddyCatalog()">Catalog</button>
+            <button class="btn btn-ghost" onclick="openSignupPage()">Get Personalized Tools</button>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="hero-highlight-badge">
+            <span class="badge-icon">✓</span>
+            <span class="badge-text">
+              <strong>Complete Login Details Provided</strong>
+              <span class="badge-subtitle">We provide complete login details (Email/Password) directly to your Gmail after order</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="brilliant-trust">
+        <div>
+          <strong id="heroProducts">0+</strong>
+          <span>Premium AI plans</span>
+        </div>
+        <div>
+          <strong>38K+</strong>
+          <span>Accounts delivered</span>
+        </div>
+        <div>
+          <strong>4.9★</strong>
+          <span>Average buyer rating</span>
+        </div>
+        <div>
+          <strong>24/7</strong>
+          <span>Reseller support</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="product-search-row compact-search-title">
+      <div>
+        <b>Search</b>
+      </div>
+    </section>
+
+    <section class="hero-search-return">
+      <div class="hero-search-wrap">
+        <input id="searchInput" oninput="renderProducts()" onkeydown="handleMarketplaceSearchEnter(event)" placeholder="Search ChatGPT, Claude, Cursor, Canva, automation tools...">
+        <button class="hero-search-btn" type="button" onclick="performMarketplaceSearch()">Search</button>
+      </div>
+    </section>
+
+    <div class="filter-search-line">
+      <div class="filter-bar" id="filters"></div>
+    </div>
+
+    <section class="container" id="products">
+      <div class="section-head">
+        <div class="marketplace-buyer-switch">
+          <span class="rate-caption">1 Year Access Included</span>
+          <button id="marketplace-single" class="marketplace-buyer-btn active" onclick="setBuyer('single')">Single</button>
+          <button id="marketplace-reseller" class="marketplace-buyer-btn" onclick="setBuyer('reseller')">Resell/Bulk</button>
+
+          <h2 id="pageTitle" class="visually-hidden-title">Single Plans</h2>
+          <p id="pageSub" class="visually-hidden-title">Retail pricing for normal buyers.</p>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+    </section>
+
+    <section class="market-guide">
+      <div class="guide-head">
+        <small>How RoyalClue works</small>
+        <h2>Find the right premium AI account in minutes.</h2>
+        <p>Choose your buyer type, compare available plans, place your order, and submit payment proof for review.</p>
+      </div>
+
+      <div class="guide-grid">
+        <article>
+          <span>01</span>
+          <h3>Choose your role</h3>
+          <p>Sign up as developer, freelancer, marketer, agency owner, creator, writer or startup. Relevant tools will appear first.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Compare paid plans</h3>
+          <p>Browse paid AI account options with simple pricing and clear order steps.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Pick pricing type</h3>
+          <p>Use Single for personal orders, or Resell/Bulk for 5+ accounts. Bulk/Resell uses one discounted rate.</p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>Submit order proof</h3>
+          <p>Submit your email, transaction ID, and payment screenshot so the order can be reviewed and delivered.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="role-helper">
+      <div>
+        <b>For coders</b>
+        <span>Cursor, Copilot, Replit, v0, Devin, Phind</span>
+      </div>
+      <div>
+        <b>For marketers</b>
+        <span>Jasper, Copy.ai, Canva, Clay, Zapier, Make</span>
+      </div>
+      <div>
+        <b>For writers</b>
+        <span>Grammarly, QuillBot, Perplexity, Claude, ChatGPT</span>
+      </div>
+      <div>
+        <b>For creators</b>
+        <span>Runway, HeyGen, CapCut, ElevenLabs, Pika, Kling</span>
+      </div>
+    </section>
+
+
+    <section class="container">
+      <div class="section-head"><div><small>Process</small><h2>How ordering <em>works</em></h2><p>Simple checkout, proof submission, and order review.</p></div></div>
+      <div class="features">
+        <div><b>1</b><h3>Select paid plan</h3><p>Choose AI, coding, automation, design, video, voice or writing tools.</p></div>
+        <div><b>2</b><h3>Complete payment</h3><p>Use the available wallet details and keep your transaction proof ready.</p></div>
+        <div><b>3</b><h3>Submit proof</h3><p>Add buyer email, transaction ID and payment screenshot.</p></div>
+        <div><b>4</b><h3>Order delivery</h3><p>Your order status is reviewed and updated after payment confirmation.</p></div>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="live-card">
+        <div class="section-head"><div><small>Activity</small><h2>Recent activity</h2></div><span>Marketplace updates</span></div>
+        <div class="live-list" id="liveFeed"></div>
+      </div>
+    </section>
+
+    <footer class="site-footer" id="siteFooter">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <div class="logo footer-logo"><div class="logo-mark">R</div><div><span>Royal</span>Clue</div></div>
+          <p>Premium AI account marketplace for single buyers, resellers, agencies, creators and startups.</p>
+          <div class="footer-badges">
+            <span>Paid plans only</span>
+            <span>Reseller pricing</span>
+            <span>Admin approval</span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <h4>Marketplace</h4>
+          <a onclick="setBuyer('single')">Single Buyer</a>
+          <a onclick="setBuyer('reseller')">Resell/Bulk Buyer</a>
+          <a onclick="openSignupPage()">Create Account</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Popular Tools</h4>
+          <a onclick="quickOpen('AI','chatgpt','ChatGPT')">ChatGPT / Claude</a>
+          <a onclick="quickOpen('Coding','cursor','Cursor')">Cursor / Copilot</a>
+          <a onclick="quickOpen('Automation','zapier','Automation')">Zapier / Make</a>
+          <a onclick="quickOpen('Video','runway','Video AI')">Runway / HeyGen</a>
+        </div>
+
+        <div class="footer-col">
+          <h4>Support</h4>
+          <a href="#aboutUs">About us</a>
+          <a href="#contactUs">Contact</a>
+          <a href="#privacyPolicy">Privacy</a>
+        </div>
+      </div>
+
+      <div class="footer-info-grid">
+        <section id="aboutUs" class="footer-info-card">
+          <small>About us</small>
+          <h3>Built for premium AI account buyers.</h3>
+          <p>RoyalClue helps buyers compare paid AI account options by work type, buyer type and budget. We focus on clear pricing, simple proof submission and reliable order review.</p>
+        </section>
+
+        <section id="contactUs" class="footer-info-card">
+          <small>Contact</small>
+          <h3>Need help choosing a plan?</h3>
+          <p>Email: support@royalclue.com<br>Website: royalclue.com<br>Support: order help and delivery updates.</p>
+        </section>
+
+        <section id="privacyPolicy" class="footer-info-card">
+          <small>Privacy</small>
+          <h3>Your buyer details stay simple.</h3>
+          <p>Signup and order details are used for order support, payment review and delivery communication. Keep your email and transaction information accurate when placing an order.</p>
+        </section>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© <span id="copyrightYear">2026</span> royalclue.com. All rights reserved.</p>
+        <p>Premium AI accounts marketplace · Single · Resell/Bulk</p>
+      </div>
+    </footer>
+
+  </main>
+
+  <section class="page" id="paymentPage">
+    <div class="page-top"><div class="logo"><div class="logo-mark">R</div><div>Secure Payment</div></div><button class="btn btn-ghost" onclick="showStore()">← Back</button></div>
+    <div class="payment-grid">
+      <div class="panel">
+        <div class="eyebrow"><b>STEP 2</b> Complete crypto payment</div>
+        <h1>Payment <em>details</em></h1>
+        <p>Send exact amount, then submit transaction ID and screenshot. Admin will verify and deliver by email.</p>
+        <div class="box"><b>Choose payment method</b><select id="payCoin" onchange="renderPaymentInfo()"><option>USDT TRC20</option><option>BTC</option><option>ETH</option><option>BNB</option></select><div id="walletBox"></div></div>
+        <form class="box" onsubmit="submitOrder(event)">
+          <b>Submit payment proof</b>
+          <div class="checkout-minimum-box" id="checkoutMinimumBox" style="display:none;"></div>
+          <label class="quantity-field" for="payQuantity">
+            <span>Account quantity</span>
+            <input id="payQuantity" type="number" min="1" value="1" inputmode="numeric" onchange="renderPaymentSummary();renderPaymentInfo();" oninput="renderPaymentSummary();renderPaymentInfo();">
+          </label>
+          <input id="payEmail" type="email" required placeholder="Your email address">
+          <input id="payTx" required placeholder="Transaction ID / Hash">
+          <input id="payContact" placeholder="Telegram / WhatsApp optional">
+          <input id="payScreenshot" type="file" accept="image/*">
+          <button class="btn btn-coral full">Submit for admin approval</button>
+        </form>
+      </div>
+      <div class="panel">
+        <h2>Order summary</h2>
+        <div id="paymentSummary"></div>
+        <div class="box">
+          <p><span>Order type</span><b id="payOrderType">Single</b></p>
+          <p><span>Status</span><b class="status pending">Pending Payment</b></p>
+          <p><span>Delivery</span><b>1–6 hours</b></p>
+          <p><span>Support</span><b>24/7</b></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="page" id="signupPage">
+    <div class="page-top">
+      <div class="logo"><div class="logo-mark">R</div><div><span>Royal</span>Clue Signup</div></div>
+      <button class="btn btn-ghost" onclick="showStore()">← Back</button>
+    </div>
+
+    <div class="signup-grid">
+      <div class="panel signup-intro">
+        <div class="eyebrow"><b>BUYER PROFILE</b> Create account first to place order</div>
+        <h1>Create your <em>buyer</em> <em>account</em></h1>
+        <p>Tell us what type of premium AI accounts you are looking for so we can organize orders and delivery details clearly.</p>
+        <div class="signup-benefits">
+          <div><b>✓</b><span>Order as single, reseller or bulk buyer</span></div>
+          <div><b>✓</b><span>Choose your role so orders are easier to manage</span></div>
+          <div><b>✓</b><span>Order details stay organized for review</span></div>
+        </div>
+      </div>
+
+      <form class="panel signup-form" onsubmit="submitSignup(event)" novalidate>
+        <div class="signup-order-notice" id="signupOrderNotice" hidden>
+          <div class="notice-icon">R</div>
+          <div>
+            <b>Account needed before checkout</b>
+            <span id="signupOrderNoticeText">Create your buyer account first. After signup, we will send you back to checkout.</span>
+          </div>
+        </div>
+        <h2>Sign up</h2>
+        <p>Create your RoyalClue buyer profile. All fields are required.</p>
+
+        <div class="form-row">
+          <input id="signupName" required placeholder="Your name / business name" autocomplete="name">
+          <input id="signupEmail" type="email" required placeholder="Email address" autocomplete="email">
+        </div>
+
+        <div class="form-row">
+          <input id="signupContact" placeholder="Telegram / WhatsApp optional" autocomplete="tel">
+          <select id="signupRole" required>
+            <option value="">Who are you? *</option>
+            <option>Developer</option>
+            <option>Coder</option>
+            <option>Freelancer</option>
+            <option>Marketer</option>
+            <option>Agency Owner</option>
+            <option>Automation Agency</option>
+            <option>Creator</option>
+            <option>AI Startup</option>
+            <option>Student</option>
+            <option>Exam Writer</option>
+            <option>Content Writer</option>
+            <option>Designer</option>
+            <option>Video Editor</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <select id="signupLooking" required>
+          <option value="">What are you looking for? *</option>
+          <option>ChatGPT / Claude / Gemini type AI plans</option>
+          <option>Coding tools like Cursor, Copilot, Replit, v0</option>
+          <option>Automation tools like Zapier, Make, n8n, Clay</option>
+          <option>Design tools like Canva, Figma, Adobe, Freepik</option>
+          <option>Video tools like Runway, HeyGen, CapCut, Kling</option>
+          <option>Voice tools like ElevenLabs, Murf AI</option>
+          <option>Writing/marketing tools like Grammarly, Jasper, Copy.ai</option>
+          <option>Bulk accounts for reselling</option>
+          <option>Custom request / not sure yet</option>
+        </select>
+
+        <div class="form-row">
+          <select id="signupBuyerType" required>
+            <option value="">Order type *</option>
+            <option>Single Buyer</option>
+            <option>Resell/Bulk Buyer</option>
+            <option>Just browsing</option>
+          </select>
+          <select id="signupBudget" required>
+            <option value="">Monthly budget *</option>
+            <option>Under $25</option>
+            <option>$25 - $50</option>
+            <option>$50 - $100</option>
+            <option>$100 - $250</option>
+            <option>$250+</option>
+          </select>
+        </div>
+
+        <select id="signupSource" required>
+          <option value="">Where did you find us? *</option>
+          <option>Facebook</option>
+          <option>Reddit</option>
+          <option>LinkedIn</option>
+          <option>Google Search</option>
+          <option>YouTube</option>
+          <option>Telegram</option>
+          <option>Friend / Referral</option>
+          <option>Other</option>
+        </select>
+
+        <textarea id="signupNote" placeholder="Specific tools, plan duration, or quantity you want? Example: ChatGPT Pro + Cursor Pro bulk" maxlength="300"></textarea>
+
+        <button class="btn btn-coral full" type="submit">Create Account & Continue</button>
+      </form>
+    </div>
+  </section>
+
+  <section class="page auth-page" id="loginPage">
+    <div class="auth-shell">
+      <div class="auth-hero-card">
+        <div class="auth-brand-row">
+          <div class="logo-mark">R</div>
+          <div>
+            <strong>RoyalClue</strong>
+            <span>premium account marketplace</span>
+          </div>
+        </div>
+        <p class="auth-kicker">Buyer access</p>
+        <h1>Welcome back to your account.</h1>
+        <p class="auth-copy">Log in with the email used during signup. Your saved contact details help us connect your order, checkout request, and delivery updates.</p>
+        <div class="auth-points">
+          <div><b>01</b><span>Continue checkout faster</span></div>
+          <div><b>02</b><span>Keep reseller and bulk requests organized</span></div>
+          <div><b>03</b><span>Return to the store after login</span></div>
+        </div>
+      </div>
+
+      <div class="login-card auth-form-card">
+        <button class="auth-close" type="button" onclick="showStore()" aria-label="Back to store">×</button>
+        <div class="auth-form-head">
+          <div class="auth-icon">R</div>
+          <div>
+            <h2>Buyer Login</h2>
+            <p>Enter your signup email to continue.</p>
+          </div>
+        </div>
+        <form onsubmit="submitLogin(event)" novalidate class="auth-form">
+          <label>Email address
+            <input id="loginEmail" type="email" placeholder="you@example.com" autocomplete="email" required onkeydown="if(event.key==='Enter') submitLogin(event)">
+          </label>
+          <label>Telegram / WhatsApp <em>optional</em>
+            <input id="loginContact" type="text" placeholder="@username or phone number" autocomplete="tel">
+          </label>
+          <button class="btn btn-coral full auth-main-btn" type="submit">Continue to store</button>
+        </form>
+        <small id="loginMessage" class="auth-message">If your email is not found, please create an account first.</small>
+        <div class="auth-actions">
+          <button class="btn btn-ghost full" onclick="openSignupPage()">Create account</button>
+          <button class="btn btn-ghost full" onclick="showStore()">Back to store</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page" id="adminLoginPage">
+    <div class="login-card">
+      <div class="logo center"><div class="logo-mark">R</div><div>Admin Panel</div></div>
+      <p id="adminUnlockHint">Type <b>villain</b> anywhere, then type <b>mind</b> within 5 seconds to unlock this dashboard.</p>
+      <input id="adminPasswordInput" placeholder="Unlock word" onkeydown="if(event.key==='Enter') adminLogin()">
+      <button class="btn btn-coral full" onclick="adminLogin()">Unlock Admin</button>
+      <button class="btn btn-ghost full" onclick="showStore()">Back</button>
+    </div>
+  </section>
+
+  <section class="page" id="adminPage">
+    <div class="admin-layout">
+      <aside class="sidebar">
+        <div class="logo"><div class="logo-mark">R</div><div>Admin</div></div>
+        <button onclick="scrollAdminPanel('dashPanel')">Dashboard</button>
+        <button onclick="scrollAdminPanel('ordersPanel')">Orders</button>
+        <button onclick="scrollAdminPanel('signupsPanel')">Signups / Leads</button>
+        <button onclick="scrollAdminPanel('quickProductPanel')">Quick Price Edit</button>
+        <button onclick="scrollAdminPanel('productsPanel')">All Products</button>
+        <button onclick="scrollAdminPanel('productAnalyticsPanel')">Product Sales / Clicks</button>
+        <button onclick="scrollAdminPanel('walletPanel')">Crypto Wallets</button>
+        <button onclick="scrollAdminPanel('sourcePanel')">Visitor Sources</button>
+        <button onclick="scrollAdminPanel('settingsPanel')">Mail / Site Text</button>
+        <button onclick="scrollAdminPanel('logsPanel')">Logs</button>
+        <button onclick="showStore()">← Store</button>
+        <button onclick="adminLogout()">Lock Admin</button>
+        <small>Secret access only.</small>
+      </aside>
+      <div class="admin-main">
+        <div class="dash" id="dashPanel">
+          <div><span>Pending</span><h2 id="adminPending">0</h2></div>
+          <div><span>Revenue</span><h2 id="adminRevenue">$0</h2></div>
+          <div><span>Visitors</span><h2 id="adminVisitors">0</h2></div>
+          <div><span>Views</span><h2 id="adminViews">0</h2></div>
+          <div><span>Signups</span><h2 id="adminSignups">0</h2></div>
+          <div><span>Today</span><h2 id="adminTodayVisitors">0</h2></div>
+          <div><span>Top Source</span><h2 id="adminTopSource">Direct</h2></div>
+        </div>
+        <div class="panel" id="ordersPanel"><div class="panel-head"><h2>Orders</h2><button class="btn btn-small btn-ghost" onclick="clearOrders()">Clear</button></div><div class="table-wrap"><table><thead><tr><th>Order ID</th><th>Buyer</th><th>Type</th><th>Total</th><th>Payment</th><th>TX ID</th><th>Source</th><th>Status</th><th>Actions</th></tr></thead><tbody id="ordersTable"></tbody></table></div></div>
+        <div class="panel" id="signupsPanel"><div class="panel-head"><h2>Signups / Buyer Intent</h2><button class="btn btn-small btn-ghost" onclick="clearSignups()">Clear</button></div><p>Collected from the signup page. Buyer demand and source tracking for admin review.</p><div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Looking For</th><th>Budget</th><th>Found Us</th><th>Contact</th><th>Time</th></tr></thead><tbody id="signupsTable"></tbody></table></div></div>
+
+        <div class="owner-hero panel">
+          <div>
+            <small>OWNER MODE // ROYALCLUE CONTROL</small>
+            <h2>Shadow Price Console</h2>
+            <p>Private dark dashboard for editing product prices. Change the values here and the public store updates live.</p>
+          </div>
+          <div class="owner-signal">
+            <span class="pulse-dot"></span> LIVE SYNC ACTIVE
+          </div>
+        </div>
+
+        <div class="panel quick-product-panel owner-console" id="quickProductPanel">
+          <div class="panel-head">
+            <div>
+              <h2>Product Price Console</h2>
+              <p>Only the important fields: product ID, name, Single, and Bulk/Resell. Inputs auto-save.</p>
+            </div>
+            <button class="btn btn-small btn-coral" onclick="saveQuickProductEditor()">Force Save</button>
+          </div>
+          <div class="quick-product-grid owner-price-grid">
+            <label>Choose Product<select id="quickProductSelect" onchange="loadQuickProductEditor()"></select></label>
+            <label>Product ID<input id="quickProductId" readonly placeholder="ID"></label>
+            <label>Product Name<input id="quickProductName" placeholder="Product name" oninput="quickProductLiveUpdate('name', this.value)"></label>
+            <label>Single Price<input id="quickProductSingle" type="number" min="0" oninput="quickProductLiveUpdate('price', Number(this.value))"></label>
+            <label>Bulk/Resell Price<input id="quickProductReseller" type="number" min="0" oninput="quickProductLiveUpdate('reseller', Number(this.value))"></label>
+          </div>
+          <div class="owner-save-status" id="quickProductStatus">Select a product and edit any value. Store updates instantly.</div>
+          <div id="quickProductPreview" class="quick-product-preview"></div>
+        </div>
+        <div class="panel owner-products-panel" id="productsPanel"><div class="panel-head"><div><h2>All Product Prices</h2><p>Fast table edit. Change name or price, and the main site updates immediately.</p></div><div><button class="btn btn-small btn-ghost" onclick="randomizeAllStock()">Random Stock 300-4K</button><button class="btn btn-small btn-coral" onclick="openAddProductForm()">+ Add</button></div></div><div class="table-wrap"><table class="owner-price-table"><thead><tr><th>ID</th><th>Product</th><th>Single</th><th>Bulk/Resell</th><th>Stock</th><th>Live</th><th>Action</th></tr></thead><tbody id="adminProducts"></tbody></table></div></div>
+
+        <div class="panel" id="productAnalyticsPanel">
+          <div class="panel-head"><h2>Product Sales, Clicks & Source Tracking</h2><div><button class="btn btn-small btn-ghost" onclick="clearProductAnalytics()">Clear Analytics</button><button class="btn btn-small btn-coral" onclick="exportLogs()">Export</button></div></div>
+          <p>এখানে কোন product থেকে sell আসছে, কোন product বেশি click/view হচ্ছে, আর কোন source থেকে visitor/order আসছে সব দেখা যাবে.</p>
+          <h3>Top Products by Sales / Clicks / Views</h3>
+          <div class="table-wrap"><table><thead><tr><th>Product</th><th>Sales</th><th>Revenue</th><th>Clicks</th><th>Views</th><th>Top Source</th></tr></thead><tbody id="productSalesTable"></tbody></table></div>
+          <h3>Product Performance by Source</h3>
+          <div class="table-wrap"><table><thead><tr><th>Product</th><th>Source</th><th>Sales</th><th>Revenue</th><th>Clicks</th><th>Views</th></tr></thead><tbody id="productSourceTable"></tbody></table></div>
+          <h3>Latest Product Events</h3>
+          <div class="table-wrap"><table><thead><tr><th>Time</th><th>Event</th><th>Product</th><th>Source</th><th>Amount</th></tr></thead><tbody id="productEventsTable"></tbody></table></div>
+        </div>
+        <div class="panel" id="walletPanel"><h2>Crypto Wallet Live Update</h2><p>Payment page updates instantly.</p><div class="wallet-grid" id="walletAdmin"></div></div>
+        <div class="panel" id="sourcePanel"><div class="panel-head"><h2>Visitor Source Tracking</h2><button class="btn btn-small btn-ghost" onclick="exportLogs()">Export Full Data</button></div><p>Tracks direct, referrer and UTM source visits on this browser. Backend tracking endpoint is also added for production.</p><div class="table-wrap"><table><thead><tr><th>Source</th><th>Visits</th></tr></thead><tbody id="sourceTable"></tbody></table></div><h3>Recent Visits</h3><div class="table-wrap"><table><thead><tr><th>Time</th><th>Source</th><th>Page</th><th>Referrer</th></tr></thead><tbody id="visitTable"></tbody></table></div></div>
+        <div class="panel" id="settingsPanel"><div class="panel-head"><h2>Mail / Website Live Text</h2><button class="btn btn-small btn-coral" onclick="saveAdminSettings()">Save</button></div><p>Change support email and payment notice text shown on the website payment page.</p><input id="adminSupportEmail" placeholder="Support email"><textarea id="adminSupportText" placeholder="Payment page support text"></textarea></div>
+        <div class="panel" id="logsPanel"><div class="panel-head"><h2>Admin Logs</h2><div><button class="btn btn-small btn-coral" onclick="addLog('Manual admin note','admin')">+ Log</button><button class="btn btn-small btn-ghost" onclick="clearLogs()">Clear</button><button class="btn btn-small btn-ghost" onclick="exportLogs()">Export</button></div></div><div class="table-wrap"><table><thead><tr><th>Time</th><th>Type</th><th>Details</th></tr></thead><tbody id="logsTable"></tbody></table></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal buyer-requirement-modal" id="buyerRequirementModal" onclick="if(event.target===this) closeBuyerRequirementModal()">
+    <div class="modal-card buyer-requirement-card" role="dialog" aria-modal="true" aria-labelledby="buyerRequirementTitle">
+      <button class="requirement-close" type="button" aria-label="Close" onclick="closeBuyerRequirementModal()">✕</button>
+      <div class="requirement-glow"></div>
+      <div class="requirement-top">
+        <div class="requirement-icon" id="buyerRequirementIcon">R</div>
+        <div>
+          <span class="requirement-kicker" id="buyerRequirementKicker">RoyalClue pricing notice</span>
+          <h2 id="buyerRequirementTitle">Buyer requirement</h2>
+          <p id="buyerRequirementText">This pricing type has a minimum account requirement.</p>
+        </div>
+      </div>
+      <div class="requirement-highlight">
+        <span>Minimum order</span>
+        <strong id="buyerRequirementMinimum">5 accounts</strong>
+      </div>
+      <div class="requirement-points">
+        <div><b>✓</b><span>Tier pricing is shown instantly for easy comparison.</span></div>
+        <div><b>✓</b><span>Add the minimum quantity before placing the order.</span></div>
+        <div><b>✓</b><span>Support confirms availability before delivery.</span></div>
+      </div>
+      <button class="btn btn-coral full requirement-continue" type="button" onclick="closeBuyerRequirementModal()">Got it, continue</button>
+    </div>
+  </div>
+<iframe id="ownerMusicFrame" title="owner music" allow="autoplay" style="position:fixed;width:1px;height:1px;left:-9999px;top:-9999px;border:0;opacity:0" src=""></iframe>
+<div class="sale-popup" id="salePopup"><div id="popupIcon">A</div><section><strong id="popupName">Ahmed K.</strong><span id="popupItem">just bought ChatGPT Pro</span><small id="popupTime">2 min ago · Bangladesh</small></section><button onclick="salePopup.classList.remove('show')">✕</button></div>
+  <div class="modal" id="productModal"><div class="modal-card"><div class="panel-head"><h2>Add / Live Product</h2><button class="icon-btn" onclick="closeProductModal()">✕</button></div><input id="newProductName" placeholder="Account / Product name"><input id="newProductBrand" placeholder="Brand"><select id="newProductCat"><option>AI</option><option>Coding</option><option>Automation</option><option>Design</option><option>Video</option><option>Voice</option><option>Productivity</option><option>Marketing</option><option>Research</option><option>Writing</option></select><div class="form-row"><input id="newProductSingle" type="number" placeholder="Single price"><input id="newProductReseller" type="number" placeholder="Bulk/Resell price"></div><div class="form-row"><input id="newProductStock" type="number" placeholder="Stock auto 300-4000"></div><input id="newProductDomain" placeholder="Domain for real logo, e.g. openai.com"><input id="newProductLogo" placeholder="Custom logo image URL optional"><button class="btn btn-coral full" onclick="saveNewProduct()">Save Product</button></div></div>
+  
+  <div class="support-widget" id="supportWidget">
+    <button class="support-fab" id="supportFab" onclick="toggleSupportChat()">
+      <span class="support-fab-dot"></span>
+      <span class="support-fab-icon">💬</span>
+      <span class="support-fab-text">Live Chat</span>
+    </button>
+
+    <div class="support-panel" id="supportPanel">
+      <div class="support-head">
+        <div>
+          <strong>Support Team</strong>
+          <small>Fast reply · Auto support</small>
+        </div>
+        <button class="icon-btn" onclick="closeSupportChat()">✕</button>
+      </div>
+
+      <div class="support-status">
+        <span class="status-dot"></span>
+        <span>We usually reply instantly for pricing, payment, stock and login help.</span>
+      </div>
+
+      <div class="support-messages" id="supportMessages"></div>
+
+      <div class="support-quick">
+        <button onclick="sendQuickSupport('price')">Price</button>
+        <button onclick="sendQuickSupport('stock')">Stock</button>
+        <button onclick="sendQuickSupport('payment')">Payment</button>
+        <button onclick="sendQuickSupport('delivery')">Delivery</button>
+      </div>
+
+      <div class="support-compose">
+        <input id="supportInput" type="text" placeholder="Type your message..." onkeydown="if(event.key==='Enter') sendSupportMessage()">
+        <button class="btn btn-coral" onclick="sendSupportMessage()">Send</button>
+      </div>
+    </div>
+  </div>
+  <div class="toast" id="toast"></div>
+  <script src="js/secure-api-client.js"></script>
+  <script src="js/app.js"></script>
+
+              <div class="method-panel" id="cardMethodPanel" style="display:none;">
+                <div class="safe-card-box">
+                  <div class="safe-card-title">Card payment</div>
+                  <p>Card checkout is ready to connect with your live payment gateway. Crypto/manual order verification is active now.</p>
+                  <div class="safe-card-grid">
+                    <input type="text" placeholder="Cardholder name" disabled>
+                    <input type="text" placeholder="Card number" disabled>
+                    <input type="text" placeholder="MM / YY" disabled>
+                    <input type="text" placeholder="CVV" disabled>
+                  </div>
+                  <button type="button" class="btn btn-dark" onclick="showCardUnavailable()">Submit Card</button>
+                  <small>Your card details are not collected here. Please use crypto for the active checkout flow.</small>
+                </div>
+              </div>
+
+</body>
+</html>

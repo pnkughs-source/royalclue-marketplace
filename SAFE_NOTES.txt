@@ -1,0 +1,10 @@
+Included in this version:
+- Bemady.com branding on homepage
+- Smaller live chat button with online status
+- Card payment panel is ready for live payment-gateway connection; crypto/manual verification is active
+- Crypto remains the active checkout method
+
+Not included:
+- No collection or storage of card numbers
+- No cookie harvesting
+- No user-agent harvesting from failed payments

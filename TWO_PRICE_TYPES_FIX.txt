@@ -1,0 +1,5 @@
+Fixed pricing UI to use only 2 sell rates:
+1) Single = 50% of market price
+2) Bulk/Resell = 30% of market price
+
+Removed separate Reseller and Bulk tabs/columns from the admin pricing center. Old bulk field is kept internally only as an alias for compatibility, always synced to Bulk/Resell.

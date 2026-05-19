@@ -1,0 +1,13 @@
+Admin hidden access updated:
+
+Type this on the website:
+villain
+
+Direct link:
+index.html#villain
+
+Admin password:
+mind
+
+Old direct link still works:
+index.html#2026
