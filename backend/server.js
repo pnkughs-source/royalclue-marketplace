@@ -50,8 +50,13 @@ app.get('/api/wallets',(req,res)=>res.json(read().wallets));app.put('/api/wallet
 app.post('/api/analytics/view/:id',(req,res)=>{let db=read(),id=req.params.id;db.analytics.productViews[id]=(db.analytics.productViews[id]||0)+1;write(db);res.json({ok:true})});app.post('/api/analytics/click/:id',(req,res)=>{let db=read(),id=req.params.id;db.analytics.productClicks[id]=(db.analytics.productClicks[id]||0)+1;write(db);res.json({ok:true})});
 app.get('/api/admin/dashboard',admin,(req,res)=>{let db=read(),revenue=db.orders.filter(o=>['approved','delivered'].includes(o.status)).reduce((s,o)=>s+Number(o.total||0),0);res.json({pendingOrders:db.orders.filter(o=>o.status==='pending').length,totalOrders:db.orders.length,revenue,wallets:Object.keys(db.wallets).length,logs:db.logs.slice(0,30),analytics:db.analytics})});
 app.get('/api/logs',admin,(req,res)=>res.json(read().logs));app.post('/api/logs',admin,(req,res)=>{let db=read();log(db,req.body.type||'admin',req.body.details||'Manual log');write(db);res.status(201).json(db.logs[0])});
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'index.html'));
+app.get('*', (req, res) => {
+  const filePath = path.join(__dirname, '..', req.path === '/' ? 'index.html' : req.path);
+  if (fs.existsSync(filePath) && !fs.statSync(filePath).isDirectory()) {
+    res.sendFile(filePath);
+  } else {
+    res.sendFile(path.join(__dirname, '..', 'index.html'));
+  }
 });
 
 app.listen(PORT,()=>console.log(`PromptStore API running on http://localhost:${PORT}`));
