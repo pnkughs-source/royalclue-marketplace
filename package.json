@@ -1,0 +1,1 @@
+{"name":"royalclue-marketplace","version":"1.0.0","scripts":{"start":"node backend/server.js","postinstall":"cd backend && npm install"},"dependencies":{"express":"^4.18.3","cors":"^2.8.5"}}
