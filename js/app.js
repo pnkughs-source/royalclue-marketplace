@@ -357,6 +357,8 @@ function openLoginPage() {
 
 function updateSignupUI() {
   const isSigned = !!(currentUser && currentUser.email);
+  const signupPage = document.getElementById('signupPage');
+  const loginPage = document.getElementById('loginPage');
 
   document.querySelectorAll('[onclick="openSignupPage()"]').forEach(el => {
     const li = el.closest('li');
@@ -368,6 +370,9 @@ function updateSignupUI() {
     const target = li || el;
     target.style.display = isSigned ? 'none' : '';
   });
+
+  if (signupPage) signupPage.style.display = isSigned ? 'none' : '';
+  if (loginPage) loginPage.style.display = isSigned ? 'none' : '';
 
   const navActions = document.querySelector('.nav-actions');
   if (!navActions) return;
@@ -485,7 +490,7 @@ function submitSignup(e) {
     return;
   }
 
-  showStore();
+  window.location.href = 'http://127.0.0.1:5500/index.html?signup=success';
 }
 function clearSignups() { if (confirm('Clear all signups?')) { signups = []; saveJSON(SIGNUPS_KEY, signups); addLog('Signups cleared', 'admin'); renderAdmin() } }
 function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200) }
@@ -1434,6 +1439,7 @@ function selectMethod(method) {
 }
 
 function init() {
+  const pageParams = new URLSearchParams(location.search);
   const heroEl = document.getElementById('heroProducts');
   if (heroEl) heroEl.textContent = products.length + '+';
   renderFilters();
@@ -1444,6 +1450,10 @@ function init() {
   updateSignupUI();
   ensureSupportWelcome();
   renderSupportMessages();
+  if (pageParams.get('signup') === 'success') {
+    setTimeout(() => toast('Registration successful'), 250);
+    if (history.replaceState) history.replaceState({}, '', location.pathname + location.hash);
+  }
   setInterval(salePop, 9000);
   startAutoCategorySlider();
   setTimeout(() => {
