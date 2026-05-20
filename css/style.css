@@ -1966,44 +1966,25 @@ textarea:focus{border-color:rgba(245,197,66,.7);box-shadow:0 0 0 3px rgba(245,19
   max-width:1180px !important;
   margin:0 auto !important;
   padding:12px 30px !important;
-  display:flex !important;
+  display:grid !important;
+  grid-template-columns:42px minmax(0,1fr) 42px !important;
   align-items:center !important;
   gap:10px !important;
-  overflow:hidden !important;
   background:#f8f7f1 !important;
   border-top:1px solid #e4dfd0 !important;
   border-bottom:1px solid #e4dfd0 !important;
 }
 
-.category-track{
-  flex:1 !important;
+.filter-bar .category-track{
   display:flex !important;
   align-items:center !important;
   gap:10px !important;
   overflow-x:auto !important;
-  scroll-behavior:auto !important;
-  will-change:scroll-position !important;
   scrollbar-width:none !important;
-  padding:2px 1px !important;
+  padding:2px 2px !important;
 }
 
-.category-track::-webkit-scrollbar{display:none !important;}
-
-.live-category-slider{
-  cursor:default !important;
-  touch-action:pan-x !important;
-}
-
-.live-category-slider .cat-slide-item{
-  pointer-events:none !important;
-  user-select:none !important;
-  cursor:default !important;
-}
-
-.live-category-slider::after{
-  content:"LIVE SLIDE";
-  display:none;
-}
+.filter-bar .category-track::-webkit-scrollbar{display:none !important;}
 
 .filter-bar .cat-btn{
   flex:0 0 auto !important;
@@ -2026,48 +2007,44 @@ textarea:focus{border-color:rgba(245,197,66,.7);box-shadow:0 0 0 3px rgba(245,19
 }
 
 .filter-bar .cat-btn:hover{
-  background:#f1e3c8 !important;
-  color:#111 !important;
-  border-color:#cfb77d !important;
+  background:#111 !important;
+  color:#fff !important;
+  border-color:#111 !important;
   transform:translateY(-1px) !important;
 }
 
-.filter-bar .cat-btn.active,
-.brilliant-style .filter-bar .cat-btn.active{
+.filter-bar .cat-btn.active{
   background:#080808 !important;
   color:#fff !important;
   border-color:#080808 !important;
 }
 
-.filter-bar .cat-arrow,
-.brilliant-style .filter-bar .cat-arrow{
-  flex:0 0 auto !important;
-  width:34px !important;
-  height:34px !important;
-  min-width:34px !important;
+.filter-bar .cat-arrow{
+  width:42px !important;
+  height:42px !important;
+  min-width:42px !important;
   padding:0 !important;
   border-radius:50% !important;
-  border:1px solid #111 !important;
-  background:#111 !important;
+  border:0 !important;
+  background:#0f0f10 !important;
   color:#fff !important;
-  font-size:23px !important;
+  font-size:26px !important;
   line-height:1 !important;
   cursor:pointer !important;
-  display:grid !important;
-  place-items:center !important;
-  box-shadow:0 10px 22px rgba(0,0,0,.12) !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  box-shadow:0 10px 18px rgba(0,0,0,.10) !important;
 }
 
-.filter-bar .cat-arrow:hover,
-.brilliant-style .filter-bar .cat-arrow:hover{
+.filter-bar .cat-arrow:hover{
   background:#c49a4a !important;
-  border-color:#c49a4a !important;
   color:#080804 !important;
 }
 
 @media(max-width:560px){
-  .filter-bar{padding-inline:14px !important;}
-  .filter-bar .cat-arrow{width:30px !important;height:30px !important;min-width:30px !important;font-size:20px !important;}
+  .filter-bar{padding:10px 14px !important;grid-template-columns:38px minmax(0,1fr) 38px !important;gap:8px !important;}
+  .filter-bar .cat-arrow{width:38px !important;height:38px !important;min-width:38px !important;font-size:22px !important;}
   .filter-bar .cat-btn{padding:8px 14px !important;font-size:11px !important;}
 }
 
@@ -3647,15 +3624,7 @@ body.catalog-open{overflow-x:hidden;}
   height: 38px !important;
 }
 
-/* Slightly tighter live slider chips so full line fits better */
-.filter-bar{
-  gap: 10px !important;
-}
-.filter-bar button{
-  height: 38px !important;
-  padding: 0 16px !important;
-  font-size: 12px !important;
-}
+
 
 @media (max-width: 900px){
   .hero-search-return{
@@ -3719,65 +3688,6 @@ body.catalog-open{overflow-x:hidden;}
 .filter-search-line .filter-bar{
   width: 100% !important;
   padding-top: 2px !important;
-}
-.filter-bar{
-  display: grid !important;
-  grid-template-columns: 42px minmax(0, 1fr) 42px !important;
-  align-items: center !important;
-  gap: 10px !important;
-  width: 100% !important;
-  overflow: hidden !important;
-}
-.filter-bar .cat-arrow{
-  width: 42px !important;
-  height: 42px !important;
-  min-width: 42px !important;
-  border-radius: 50% !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  font-size: 26px !important;
-  line-height: 1 !important;
-  background: #0f0f10 !important;
-  color: #fff !important;
-  border: 0 !important;
-  box-shadow: 0 10px 18px rgba(0,0,0,.10) !important;
-}
-.filter-bar .category-track{
-  min-width: 0 !important;
-  width: 100% !important;
-  overflow-x: auto !important;
-  overflow-y: hidden !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 10px !important;
-  padding: 2px 2px !important;
-  scroll-behavior: smooth !important;
-  scrollbar-width: none !important;
-}
-.filter-bar .category-track::-webkit-scrollbar{
-  display: none !important;
-}
-.filter-bar .cat-btn{
-  flex: 0 0 auto !important;
-  height: 40px !important;
-  padding: 0 16px !important;
-  border-radius: 999px !important;
-  font-size: 12px !important;
-  font-weight: 800 !important;
-  white-space: nowrap !important;
-  border: 1px solid #dacfb9 !important;
-  background: #fffaf2 !important;
-  color: #222 !important;
-}
-.filter-bar .cat-btn.active,
-.filter-bar .cat-btn:hover{
-  background: #111 !important;
-  color: #fff !important;
-  border-color: #111 !important;
-}
-.filter-bar .cat-btn span{
-  margin-left: 4px !important;
 }
 
 /* Buyer tabs fit nicely under slider */

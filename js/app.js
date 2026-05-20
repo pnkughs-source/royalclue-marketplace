@@ -586,11 +586,14 @@ function renderFilters() {
   if (!wrap) return;
   const sliderItems = categories.map(c => {
     const count = c === 'All' ? products.length : products.filter(p => p.cat === c).length;
-    return `<span class="cat-btn cat-slide-item">${c} <span>${count}</span></span>`;
+    const active = c === filter ? 'active' : '';
+    return `<button class="cat-btn ${active}" onclick="selectCategory('${c}')">${c} <span>${count}</span></button>`;
   }).join('');
   const loopItems = sliderItems + sliderItems;
   wrap.innerHTML = `
-    <div class="category-track live-category-slider" id="categoryTrack" aria-label="Available categories">${loopItems}</div>
+    <button class="cat-arrow" onclick="scrollCats(-1)" aria-label="Scroll left">‹</button>
+    <div class="category-track" id="categoryTrack" aria-label="Available categories">${loopItems}</div>
+    <button class="cat-arrow" onclick="scrollCats(1)" aria-label="Scroll right">›</button>
   `;
   startAutoCategorySlider();
 }
