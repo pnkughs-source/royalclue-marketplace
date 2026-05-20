@@ -97,6 +97,15 @@ const viewedThisSession = new Set();
 
 function loadJSON(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) || fallback } catch { return fallback } }
 function saveJSON(key, value) { localStorage.setItem(key, JSON.stringify(value)) }
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char]));
+}
 function randomStock(min = 300, max = 4000) { return Math.floor(Math.random() * (max - min + 1)) + min }
 function favicon(domain) { return `https://www.google.com/s2/favicons?domain=${domain}&sz=128` }
 function logoFor(p) { return p.customLogo || favicon(p.domain || p.brand) }
@@ -386,8 +395,8 @@ function updateSignupUI() {
   }
 
   if (isSigned) {
-    const name = (currentUser.name || currentUser.email || 'Buyer').split(' ')[0];
-    const role = currentUser.role || 'Buyer';
+    const name = escapeHtml((currentUser.name || currentUser.email || 'Buyer').split(' ')[0]);
+    const role = escapeHtml(currentUser.role || 'Buyer');
     badge.style.display = 'flex';
     badge.innerHTML = `<span class="account-dot">✓</span><div><b>${name}</b><small>${role}</small></div><button type="button" onclick="logoutBuyer(event)">Logout</button>`;
   } else {
@@ -490,7 +499,11 @@ function submitSignup(e) {
     return;
   }
 
-  window.location.href = 'http://127.0.0.1:5500/index.html?signup=success';
+  hideSignupOrderNotice();
+  showStore();
+  updateSignupUI();
+  renderProducts();
+  document.getElementById('products')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 function clearSignups() { if (confirm('Clear all signups?')) { signups = []; saveJSON(SIGNUPS_KEY, signups); addLog('Signups cleared', 'admin'); renderAdmin() } }
 function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200) }
@@ -537,14 +550,13 @@ function setBuyer(type) {
 function renderFilters() {
   const wrap = document.getElementById('filters');
   if (!wrap) return;
-  const buttons = categories.map(c => {
+  const sliderItems = categories.map(c => {
     const count = c === 'All' ? products.length : products.filter(p => p.cat === c).length;
-    return `<button class="cat-btn ${filter === c ? 'active' : ''}" onclick="selectCategory('${c}')">${c} <span>${count}</span></button>`;
+    return `<span class="cat-btn cat-slide-item">${c} <span>${count}</span></span>`;
   }).join('');
+  const loopItems = sliderItems + sliderItems;
   wrap.innerHTML = `
-    <button class="cat-arrow" aria-label="Scroll categories left" onclick="scrollCats(-1)">‹</button>
-    <div class="category-track live-category-slider" id="categoryTrack" onmouseenter="pauseCategorySlider()" onmouseleave="resumeCategorySlider()">${buttons}</div>
-    <button class="cat-arrow" aria-label="Scroll categories right" onclick="scrollCats(1)">›</button>
+    <div class="category-track live-category-slider" id="categoryTrack" aria-label="Available categories">${loopItems}</div>
   `;
   startAutoCategorySlider();
 }
@@ -556,13 +568,16 @@ function selectCategory(category) {
 function scrollCats(direction) {
   const track = document.getElementById('categoryTrack');
   if (!track) return;
-  pauseCategorySlider();
-  track.scrollBy({ left: direction * 260, behavior: 'smooth' });
-  setTimeout(resumeCategorySlider, 1600);
+  const loopWidth = track.scrollWidth / 2;
+  let nextLeft = track.scrollLeft + (direction * 260);
+  if (loopWidth > 0) {
+    if (nextLeft < 0) nextLeft += loopWidth;
+    if (nextLeft >= loopWidth) nextLeft -= loopWidth;
+  }
+  track.scrollTo({ left: Math.max(0, nextLeft), behavior: 'auto' });
 }
 
 let categorySliderRafId = null;
-let categorySliderPaused = false;
 let categorySliderLastTime = 0;
 const CAT_SCROLL_SPEED = 0.8; // px per frame at 60fps
 
@@ -570,21 +585,24 @@ function startAutoCategorySlider() {
   const track = document.getElementById('categoryTrack');
   if (!track) return;
   stopAutoCategorySlider();
-  categorySliderPaused = false;
   categorySliderLastTime = 0;
   function step(time) {
     const liveTrack = document.getElementById('categoryTrack');
-    if (!liveTrack || categorySliderPaused) {
+    if (!liveTrack) {
       categorySliderRafId = requestAnimationFrame(step);
       return;
     }
-    if (categorySliderLastTime) {
-      const maxScroll = liveTrack.scrollWidth - liveTrack.clientWidth;
-      if (maxScroll <= 0) { categorySliderRafId = requestAnimationFrame(step); return; }
-      if (liveTrack.scrollLeft >= maxScroll - 6) {
-        liveTrack.scrollTo({ left: 0, behavior: 'auto' });
+    const loopWidth = liveTrack.scrollWidth / 2;
+    if (loopWidth > 0 && categorySliderLastTime) {
+      const delta = Math.min(32, time - categorySliderLastTime);
+      let nextLeft = liveTrack.scrollLeft + (CAT_SCROLL_SPEED * delta * 0.06);
+      if (nextLeft >= loopWidth) {
+        nextLeft -= loopWidth;
+      }
+      if (liveTrack.scrollLeft >= loopWidth) {
+        liveTrack.scrollTo({ left: liveTrack.scrollLeft - loopWidth, behavior: 'auto' });
       } else {
-        liveTrack.scrollBy({ left: CAT_SCROLL_SPEED, behavior: 'auto' });
+        liveTrack.scrollTo({ left: nextLeft, behavior: 'auto' });
       }
     }
     categorySliderLastTime = time;
@@ -602,12 +620,18 @@ function stopAutoCategorySlider() {
 }
 
 function pauseCategorySlider() {
-  categorySliderPaused = true;
 }
 
 function resumeCategorySlider() {
-  categorySliderPaused = false;
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+  const track = document.getElementById('categoryTrack');
+  if (!track) return;
+  if (track.scrollWidth > track.clientWidth) {
+    startAutoCategorySlider();
+  }
+});
 
 function performMarketplaceSearch() {
   renderProducts();
@@ -1450,6 +1474,11 @@ function init() {
   updateSignupUI();
   ensureSupportWelcome();
   renderSupportMessages();
+  const signupSuccessNotice = sessionStorage.getItem('signupSuccessNotice');
+  if (signupSuccessNotice) {
+    sessionStorage.removeItem('signupSuccessNotice');
+    setTimeout(() => toast(signupSuccessNotice), 250);
+  }
   if (pageParams.get('signup') === 'success') {
     setTimeout(() => toast('Registration successful'), 250);
     if (history.replaceState) history.replaceState({}, '', location.pathname + location.hash);

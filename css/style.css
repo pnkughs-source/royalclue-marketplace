@@ -1990,21 +1990,19 @@ textarea:focus{border-color:rgba(245,197,66,.7);box-shadow:0 0 0 3px rgba(245,19
 .category-track::-webkit-scrollbar{display:none !important;}
 
 .live-category-slider{
-  cursor:grab !important;
+  cursor:default !important;
   touch-action:pan-x !important;
 }
 
-.live-category-slider:active{
-  cursor:grabbing !important;
+.live-category-slider .cat-slide-item{
+  pointer-events:none !important;
+  user-select:none !important;
+  cursor:default !important;
 }
 
 .live-category-slider::after{
   content:"LIVE SLIDE";
   display:none;
-}
-
-.filter-bar:hover .cat-btn{
-  animation-play-state:paused !important;
 }
 
 .filter-bar .cat-btn{
