@@ -395,8 +395,8 @@ function updateSignupUI() {
   }
 
   if (isSigned) {
-    const name = escapeHtml((currentUser.name || currentUser.email || 'Buyer').split(' ')[0]);
-    const role = escapeHtml(currentUser.role || 'Buyer');
+    const name = esc((currentUser.name || currentUser.email || 'Buyer').split(' ')[0]);
+    const role = esc(currentUser.role || 'Buyer');
     badge.style.display = 'flex';
     badge.innerHTML = `<span class="account-dot">✓</span><div><b>${name}</b><small>${role}</small></div><button type="button" onclick="logoutBuyer(event)">Logout</button>`;
   } else {
@@ -907,12 +907,13 @@ function renderSignups() {
 function renderOrders() { document.getElementById('ordersTable').innerHTML = orders.map(o => `<tr><td>${o.id}</td><td>${o.buyer}</td><td>${o.type}</td><td>$${o.total}</td><td>${o.payment}</td><td>${o.tx}</td><td>${o.source || o.buyerProfile?.source || '-'}</td><td><span class="status ${o.status.toLowerCase()}">${o.status}</span></td><td><button class="btn btn-small btn-ghost" onclick="setOrderStatus('${o.id}','Approved')">Approve</button> <button class="btn btn-small btn-ghost" onclick="setOrderStatus('${o.id}','Delivered')">Deliver</button> <button class="btn btn-small btn-danger" onclick="setOrderStatus('${o.id}','Rejected')">Reject</button></td></tr>`).join('') || '<tr><td colspan="9">No orders yet.</td></tr>' }
 function setOrderStatus(id, status) { const o = orders.find(x => x.id === id); if (!o) return; o.status = status; saveJSON(ORDERS_KEY, orders); addLog(`${id} marked ${status}`, 'admin'); renderAdmin() }
 function clearOrders() { if (confirm('Clear all orders?')) { orders = []; saveJSON(ORDERS_KEY, orders); addLog('Orders cleared', 'admin'); renderAdmin() } }
+function esc(v) { return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])) }
 function renderAdminProducts() {
   const tbody = document.getElementById('adminProducts');
   if (!tbody) return;
   tbody.innerHTML = products.map((p, idx) => `<tr>
     <td><b>#${idx + 1}</b><br><small>ID ${p.id}</small></td>
-    <td><div class="owner-product-name"><div class="logo-img"><img src="${logoFor(p)}" alt="${escapeHtml(p.brand)}"></div><div><input value="${escapeHtml(p.name)}" oninput="updateProductField(${p.id},'name',this.value)"><small>${escapeHtml(p.brand || p.cat || 'Product')}</small></div></div></td>
+    <td><div class="owner-product-name"><div class="logo-img"><img src="${logoFor(p)}" alt="${esc(p.brand)}"></div><div><input value="${esc(p.name)}" oninput="updateProductField(${p.id},'name',this.value)"><small>${esc(p.brand || p.cat || 'Product')}</small></div></div></td>
     <td><label class="price-cell"><span>$</span><input type="number" value="${p.price}" oninput="updateProductField(${p.id},'price',Number(this.value))"></label></td>
     <td><label class="price-cell"><span>$</span><input type="number" value="${p.reseller}" oninput="updateProductField(${p.id},'reseller',Number(this.value))"></label></td>
     <td><input class="stock-mini" type="number" value="${p.stock}" oninput="updateProductField(${p.id},'stock',Number(this.value))"></td>
@@ -925,7 +926,7 @@ function renderQuickProductOptions() {
   const select = document.getElementById('quickProductSelect');
   if (!select) return;
   const current = select.value;
-  select.innerHTML = products.map((p, idx) => `<option value="${p.id}">#${idx + 1} · ${escapeHtml(p.name)}</option>`).join('');
+  select.innerHTML = products.map((p, idx) => `<option value="${p.id}">#${idx + 1} · ${esc(p.name)}</option>`).join('');
   if (current && products.some(p => String(p.id) === String(current))) select.value = current;
   loadQuickProductEditor();
 }
@@ -946,7 +947,7 @@ function loadQuickProductEditor() {
 function updateQuickProductPreview(p) {
   const preview = document.getElementById('quickProductPreview');
   if (preview) {
-    preview.innerHTML = `<div class="quick-product-card owner-preview-card"><div class="logo-img"><img src="${logoFor(p)}" alt="${escapeHtml(p.brand)}"></div><div><b>${escapeHtml(p.name)}</b><small>ID ${p.id} · ${escapeHtml(p.brand || p.cat || 'RoyalClue')}</small></div><div><span>Single</span><strong>$${p.price}</strong></div><div><span>Bulk/Resell</span><strong>$${p.reseller}</strong></div></div>`;
+    preview.innerHTML = `<div class="quick-product-card owner-preview-card"><div class="logo-img"><img src="${logoFor(p)}" alt="${esc(p.brand)}"></div><div><b>${esc(p.name)}</b><small>ID ${p.id} · ${esc(p.brand || p.cat || 'RoyalClue')}</small></div><div><span>Single</span><strong>$${p.price}</strong></div><div><span>Bulk/Resell</span><strong>$${p.reseller}</strong></div></div>`;
   }
 }
 let quickProductSaveTimer = null;
