@@ -448,6 +448,33 @@ function clearPersonalization() {
   toast('Personalization cleared');
 }
 
+function finishSignupFlow(message = 'Signup saved. You can order now') {
+  hideSignupOrderNotice();
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const signupPage = document.getElementById('signupPage');
+  const storefront = document.getElementById('storefront');
+  if (signupPage) signupPage.style.display = 'none';
+  if (storefront) storefront.style.display = 'block';
+  if (location.hash !== '#products' && history.replaceState) {
+    history.replaceState({}, '', `${location.pathname}${location.search}#products`);
+  } else if (location.hash !== '#products') {
+    location.hash = 'products';
+  }
+  updateSignupUI();
+  renderProducts();
+  toast(message);
+  requestAnimationFrame(() => {
+    document.getElementById('products')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  setTimeout(() => {
+    const stillOnSignup = document.getElementById('signupPage')?.classList.contains('active');
+    const storeHidden = getComputedStyle(document.getElementById('storefront')).display === 'none';
+    if (stillOnSignup || storeHidden) {
+      window.location.replace(`${location.pathname}${location.search}#products`);
+    }
+  }, 350);
+}
+
 function submitSignup(e) {
   e.preventDefault();
   const nameEl = document.getElementById('signupName');
@@ -484,26 +511,33 @@ function submitSignup(e) {
   currentUser = user;
   saveJSON(SIGNUPS_KEY, signups);
   saveJSON('aurum_ai_current_user_v1', currentUser);
-  updateSignupUI();
-  ensureSupportWelcome();
-  renderSupportMessages();
-  document.getElementById('payEmail') && (document.getElementById('payEmail').value = user.email);
-  addLog(`New signup: ${user.name} (${user.role}) wants ${user.looking}`, 'signup');
-  renderAdmin();
-  toast('Signup saved. You can order now');
 
   if (pendingBuyNowId) {
     const nextId = pendingBuyNowId;
     pendingBuyNowId = null;
+    try {
+      ensureSupportWelcome();
+      renderSupportMessages();
+      document.getElementById('payEmail') && (document.getElementById('payEmail').value = user.email);
+      addLog(`New signup: ${user.name} (${user.role}) wants ${user.looking}`, 'signup');
+      renderAdmin();
+    } catch (err) {
+      console.warn('Signup saved, non-critical refresh failed', err);
+    }
     buyNow(nextId);
     return;
   }
 
-  hideSignupOrderNotice();
-  showStore();
-  updateSignupUI();
-  renderProducts();
-  document.getElementById('products')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  finishSignupFlow();
+  try {
+    ensureSupportWelcome();
+    renderSupportMessages();
+    document.getElementById('payEmail') && (document.getElementById('payEmail').value = user.email);
+    addLog(`New signup: ${user.name} (${user.role}) wants ${user.looking}`, 'signup');
+    renderAdmin();
+  } catch (err) {
+    console.warn('Signup saved, non-critical refresh failed', err);
+  }
 }
 function clearSignups() { if (confirm('Clear all signups?')) { signups = []; saveJSON(SIGNUPS_KEY, signups); addLog('Signups cleared', 'admin'); renderAdmin() } }
 function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200) }
