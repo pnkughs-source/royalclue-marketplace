@@ -528,16 +528,7 @@ function submitSignup(e) {
     return;
   }
 
-  finishSignupFlow();
-  try {
-    ensureSupportWelcome();
-    renderSupportMessages();
-    document.getElementById('payEmail') && (document.getElementById('payEmail').value = user.email);
-    addLog(`New signup: ${user.name} (${user.role}) wants ${user.looking}`, 'signup');
-    renderAdmin();
-  } catch (err) {
-    console.warn('Signup saved, non-critical refresh failed', err);
-  }
+  location.reload();
 }
 function clearSignups() { if (confirm('Clear all signups?')) { signups = []; saveJSON(SIGNUPS_KEY, signups); addLog('Signups cleared', 'admin'); renderAdmin() } }
 function toast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2200) }
